@@ -2,6 +2,32 @@
 
 > **Riferimento rapido** per le componentistiche principali di Laravel e le regole d'oro per utilizzarle correttamente
 
+## Indice Rapido
+
+### 18 Componentistiche Principali
+1. [Service Container (IoC Container)](#1-service-container-ioc-container)
+2. [Service Provider](#2-service-provider)
+3. [Service (Business Logic)](#3-service-business-logic)
+4. [Repository](#4-repository)
+5. [Model (Eloquent)](#5-model-eloquent)
+6. [Controller](#6-controller)
+7. [Middleware](#7-middleware)
+8. [Form Request](#8-form-request)
+9. [Resource (API Resource)](#9-resource-api-resource)
+10. [Event & Listener](#10-event--listener)
+11. [Job (Queue)](#11-job-queue)
+12. [Policy](#12-policy)
+13. [Blade Templates](#13-blade-templates)
+14. [Artisan Commands](#14-artisan-commands)
+15. [Migration](#15-migration)
+16. [Seeder](#16-seeder)
+17. [Factory](#17-factory)
+18. [Test](#18-test)
+
+### Sezioni Speciali
+- [Regole d'Oro Generali](#regole-doro-generali)
+- [Quick Reference](#quick-reference)
+
 ---
 
 ## 1. Service Container (IoC Container)
