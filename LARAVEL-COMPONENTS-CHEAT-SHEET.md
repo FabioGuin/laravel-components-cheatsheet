@@ -155,6 +155,7 @@ class UserService
 - **Astrazione dell'accesso ai dati** - nasconde la complessità del database
 - **Interfaccia unificata** per operazioni CRUD
 - **Testabilità** - facile da mockare per i test
+- **Indipendenza dall'implementazione** - puoi cambiare da Eloquent a MongoDB, API, file, etc.
 
 ### Regole d'oro
 - ✅ **Un repository per entità** o aggregate
@@ -196,6 +197,7 @@ interface UserRepositoryInterface
     public function findByEmail(string $email): ?User;
     public function create(array $data): User;
 }
+
 ```
 
 ---
