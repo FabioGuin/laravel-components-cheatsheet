@@ -44,6 +44,13 @@
 - ❌ **Non usare mai** `app()` direttamente nei controller o servizi → **usa dependency injection**
 - ❌ **Non fare binding** nel codice applicativo, solo nei provider → **usa Service Provider**
 
+#### Eccezioni
+- **Trait**: Non hanno costruttore → usa `app()` o metodi statici
+- **Closure/Anonymous functions**: Usa `app()` per risolvere dipendenze
+- **Static methods**: Usa `app()` quando necessario
+- **Global helpers**: Possono usare `app()` per servizi Laravel
+- **Service Provider**: Può usare `$this->app` per binding
+
 ### Esempi pratici
 ```php
 // ✅ CORRETTO - Dependency injection
@@ -78,6 +85,13 @@ class UserController extends Controller
 - ✅ **Usa `singleton()` per servizi costosi** che non cambiano stato
 - ❌ **Non fare logica business** nei provider → **usa Service Layer**
 - ❌ **Non registrare servizi** che non servono sempre → **usa lazy loading**
+
+#### Eccezioni
+- **Configurazione**: Può fare setup di configurazioni e binding complessi
+- **Eventi**: Può registrare eventi e listener nel metodo `boot()`
+- **View Composers**: Può registrare view composers per Blade
+- **Macro**: Può registrare macro per Collection, Builder, etc.
+- **Package Provider**: Può registrare più servizi correlati al package
 
 ### Esempi pratici
 ```php
@@ -187,6 +201,14 @@ class EloquentUserRepository implements UserRepositoryInterface
 - ❌ **Non fare logica business complessa** nei model → **usa Service Layer**
 - ❌ **Non accedere direttamente** ad altre tabelle non correlate → **usa Repository Pattern**
 
+#### Eccezioni
+- **Accessor/Mutator**: Può fare logica di trasformazione dati
+- **Scopes**: Può fare query complesse per il model stesso
+- **Relazioni**: Può accedere a tabelle correlate tramite relazioni
+- **Eventi Model**: Può fare logica in `creating`, `updating`, `deleting`
+- **Validation**: Può fare validazione specifica del model
+- **Pivot Models**: Può gestire tabelle pivot con logica specifica
+
 ### Esempi pratici
 ```php
 // ✅ CORRETTO - Model con relazioni e scopes
@@ -228,6 +250,14 @@ class User extends Model
 - ❌ **Non fare logica business** nei controller → **usa Service Layer**
 - ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
 
+#### Eccezioni
+- **CRUD Controller**: Può gestire più azioni correlate (index, show, store, update, destroy)
+- **Logica HTTP**: Può gestire redirect, response headers, status codes
+- **File Upload**: Può gestire upload e validazione file
+- **Pagination**: Può gestire paginazione e filtri semplici
+- **Authentication**: Può gestire login/logout se non complesso
+- **Simple Controllers**: Per operazioni molto semplici può accedere direttamente al model
+
 ### Esempi pratici
 ```php
 // ✅ CORRETTO - Controller magro
@@ -259,6 +289,14 @@ class UserController extends Controller
 - ✅ **Restituisci response** o chiama `$next()`
 - ❌ **Non fare logica business** nel middleware → **usa Service Layer**
 - ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+
+#### Eccezioni
+- **Authentication**: Può accedere al database per verificare utenti
+- **Authorization**: Può fare query per verificare permessi
+- **Logging**: Può accedere al database per log delle richieste
+- **Rate Limiting**: Può accedere a cache/database per contatori
+- **CORS**: Può gestire headers e configurazioni complesse
+- **Multi-responsibility**: Può gestire più aspetti correlati (auth + logging)
 
 ### Esempi pratici
 ```php
@@ -399,6 +437,14 @@ class SendWelcomeEmail
 - ✅ **Job idempotenti** - possono essere eseguiti più volte
 - ❌ **Non fare operazioni** che richiedono interazione utente → **usa Controller o Livewire**
 - ❌ **Non accedere a sessioni** o request → **usa dependency injection**
+
+#### Eccezioni
+- **Batch Jobs**: Possono gestire più operazioni correlate
+- **Chained Jobs**: Possono dipendere da altri job
+- **Scheduled Jobs**: Possono accedere a configurazioni globali
+- **Notification Jobs**: Possono gestire più canali di notifica
+- **Report Jobs**: Possono generare report complessi
+- **Cleanup Jobs**: Possono fare operazioni di pulizia del database
 
 ### Esempi pratici
 ```php
@@ -1003,10 +1049,44 @@ Il **Service Layer** è il **cuore pulsante** della tua applicazione Laravel. È
 - **Mai** `new` o `app()` nel codice applicativo
 - **Interfacce** per i binding nel container
 
+#### Eccezioni alla Dependency Injection
+- **Trait**: Non hanno costruttore → usa `app()` o metodi statici
+- **Closure/Anonymous functions**: Usa `app()` per risolvere dipendenze
+- **Static methods**: Usa `app()` quando necessario
+- **Global helpers**: Possono usare `app()` per servizi Laravel
+
+```php
+// ✅ CORRETTO - Trait con app()
+trait LogsActivity
+{
+    protected function logActivity(string $action, $model = null)
+    {
+        $logger = app(ActivityLogger::class); // OK nei trait
+        $logger->log($action, $model);
+    }
+}
+
+// ✅ CORRETTO - Static method con app()
+class Helper
+{
+    public static function sendEmail(string $email, string $message)
+    {
+        $mailer = app(MailService::class); // OK nei metodi statici
+        return $mailer->send($email, $message);
+    }
+}
+```
+
 ### 3. Single Responsibility
 - **Una classe, una responsabilità**
 - **Un metodo, una azione**
 - **Un file, un concetto**
+
+#### Eccezioni alla Single Responsibility
+- **Controller**: Può gestire più azioni correlate (CRUD)
+- **Model**: Può avere accessor/mutator + relazioni + scopes
+- **Service Provider**: Può registrare più servizi correlati
+- **Middleware**: Può gestire più aspetti della stessa richiesta
 
 ### 4. Don't Repeat Yourself (DRY)
 - **Estrai** logica comune in servizi
