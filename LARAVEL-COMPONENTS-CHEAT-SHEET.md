@@ -79,7 +79,7 @@ class UserController extends Controller
 - **Binding di interfacce** - collega contratti alle implementazioni
 
 ### Regole d'oro
-- ✅ **Un provider per package** o funzionalità specifica
+- ✅ **Un provider per funzionalità** o package specifico
 - ✅ **Usa `register()` per binding** e `boot()` per inizializzazione
 - ✅ **Registra sempre interfacce** invece di classi concrete
 - ✅ **Usa `singleton()` per servizi costosi** che non cambiano stato
@@ -159,27 +159,42 @@ class UserService
 ### Regole d'oro
 - ✅ **Un repository per entità** o aggregate
 - ✅ **Usa interfacce** per i contratti
-- ✅ **Restituisci sempre collezioni** o modelli Eloquent
+- ✅ **Restituisci DTO o entità di dominio** per vera astrazione
 - ✅ **Implementa query specifiche** come metodi del repository
 - ❌ **Non fare logica business** nel repository → **usa Service Layer**
 - ❌ **Non accedere a più tabelle** non correlate → **usa Unit of Work Pattern**
 
+#### Eccezioni
+- **Laravel Standard**: Può restituire modelli Eloquent per semplicità
+- **Legacy Code**: Può usare modelli Eloquent per compatibilità
+- **Simple Apps**: Per applicazioni semplici, modelli Eloquent sono accettabili
+- **API Resources**: Può restituire modelli Eloquent se usi API Resources
+
 ### Esempi pratici
 ```php
-// ✅ CORRETTO - Repository con interfaccia
+// ✅ CORRETTO - Repository con DTO (vera astrazione)
+interface UserRepositoryInterface
+{
+    public function findById(int $id): ?UserDTO;
+    public function findByEmail(string $email): ?UserDTO;
+    public function create(array $data): UserDTO;
+}
+
+class EloquentUserRepository implements UserRepositoryInterface
+{
+    public function findById(int $id): ?UserDTO
+    {
+        $user = User::find($id);
+        return $user ? UserDTO::fromModel($user) : null;
+    }
+}
+
+// ✅ ACCETTABILE - Repository con modelli Eloquent (Laravel standard)
 interface UserRepositoryInterface
 {
     public function findById(int $id): ?User;
     public function findByEmail(string $email): ?User;
     public function create(array $data): User;
-}
-
-class EloquentUserRepository implements UserRepositoryInterface
-{
-    public function findById(int $id): ?User
-    {
-        return User::find($id);
-    }
 }
 ```
 
@@ -246,7 +261,7 @@ class User extends Model
 - ✅ **Usa Resource Controllers** per operazioni CRUD standard
 - ✅ **Usa Form Request** per validazione
 - ✅ **Restituisci Resource** per API consistenti
-- ✅ **Una azione per metodo** - Single Responsibility
+- ✅ **Un controller per risorsa** - gestisce una entità specifica
 - ❌ **Non fare logica business** nei controller → **usa Service Layer**
 - ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
 
@@ -296,7 +311,7 @@ class UserController extends Controller
 - **Logging**: Può accedere al database per log delle richieste
 - **Rate Limiting**: Può accedere a cache/database per contatori
 - **CORS**: Può gestire headers e configurazioni complesse
-- **Multi-responsibility**: Può gestire più aspetti correlati (auth + logging)
+- **Complex Middleware**: Può gestire più aspetti correlati (auth + logging) se ben progettato
 
 ### Esempi pratici
 ```php
