@@ -25,7 +25,7 @@
 18. [Test](#18-test)
 
 ### Sezioni Speciali
-- [Regole d'Oro Generali](#regole-doro-generali)
+- [Best Practices Generali](#best-practices-generali)
 - [Quick Reference](#quick-reference)
 
 ---
