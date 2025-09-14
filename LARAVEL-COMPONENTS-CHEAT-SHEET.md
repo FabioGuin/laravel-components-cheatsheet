@@ -38,10 +38,11 @@
 - **Registra e risolve** servizi, binding e istanze
 
 ### Regole d'oro
-- ✅ **Usa sempre dependency injection** invece di `new` o `app()`
+- ✅ **Usa sempre dependency injection** per risolvere dipendenze
 - ✅ **Registra servizi nei Service Provider** con `$this->app->bind()`
 - ✅ **Usa interfacce** per i binding per maggiore flessibilità
-- ❌ **Non usare mai** `app()` direttamente nei controller o servizi → **usa dependency injection**
+- ❌ **Non usare `new`** per creare istanze di servizi → **usa dependency injection**
+- ❌ **Non usare `app()`** nei controller o servizi → **usa dependency injection**
 - ❌ **Non fare binding** nel codice applicativo, solo nei provider → **usa Service Provider**
 
 #### Eccezioni
@@ -59,12 +60,21 @@ class UserController extends Controller
     public function __construct(private UserService $userService) {}
 }
 
-// ❌ SBAGLIATO - Uso diretto di app()
+// ❌ SBAGLIATO - Uso di new (accoppiamento forte)
 class UserController extends Controller
 {
     public function index()
     {
-        $userService = app(UserService::class); // NO!
+        $userService = new UserService(); // NO! Accoppiamento forte
+    }
+}
+
+// ❌ SBAGLIATO - Uso di app() (accoppiamento debole)
+class UserController extends Controller
+{
+    public function index()
+    {
+        $userService = app(UserService::class); // NO! Accoppiamento debole
     }
 }
 ```
@@ -745,7 +755,7 @@ class UserServiceTest extends TestCase
 
 ---
 
-## 🎯 Il Service Layer: Il Cuore Logico di Laravel
+## Il Service Layer: Il Cuore Logico di Laravel
 
 ### Perché il Service è il Cuore dell'Applicazione
 
@@ -779,7 +789,7 @@ Il **Service Layer** rappresenta il **cervello** della tua applicazione Laravel.
 
 ### Caratteristiche del Service Layer
 
-#### ✅ **Cosa fa il Service:**
+#### Cosa fa il Service:
 - **Centralizza la logica business** - Tutte le regole del dominio
 - **Orchestra le operazioni** - Coordina repository, eventi, altri servizi
 - **Mantiene la coerenza** - Applica regole uniformemente
@@ -787,7 +797,7 @@ Il **Service Layer** rappresenta il **cervello** della tua applicazione Laravel.
 - **Comunica tramite eventi** - Decoupling con altri servizi
 - **È indipendente dal framework** - Testabile e riutilizzabile
 
-#### ❌ **Cosa NON fa il Service:**
+#### Cosa NON fa il Service:
 - **Non gestisce HTTP** → usa Controller
 - **Non accede direttamente al DB** → usa Repository
 - **Non formatta dati per API** → usa Resource
