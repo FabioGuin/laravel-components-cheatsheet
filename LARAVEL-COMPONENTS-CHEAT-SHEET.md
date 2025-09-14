@@ -770,7 +770,7 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 └─────────────────────┬───────────────────────────────────────┘
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
-│                   SERVICE LAYER (CUORE)                     │
+│                   SERVICE LAYER (CORE)                      │
 │  UserService │ PaymentService │ OrderService │ EmailService │
 │  ┌─────────────────────────────────────────────────────────┐│
 │  │  • Logica Business                                      ││
