@@ -16,7 +16,7 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 - **Regole d'oro** per ogni componentistica
 - **Esempi pratici** di codice corretto e sbagliato
 - **Pattern alternativi** per ogni anti-pattern
-- **Service Layer** come cuore logico dell'applicazione
+- **Service Layer** come core logico dell'applicazione
 
 ## Contenuto
 
@@ -43,7 +43,7 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 
 ### Sezioni Speciali
 
-- **Il Service Layer: Il Cuore Logico** - Approfondimento sul ruolo centrale del Service
+- **Il Service Layer: Il Core Logico** - Approfondimento sul ruolo centrale del Service
 - **Regole d'Oro Generali** - Principi SOLID, DRY, KISS, YAGNI
 - **Quick Reference** - Flusso tipico e pattern di utilizzo
 
@@ -52,7 +52,7 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 1. **Consulta** il [Laravel Components Cheat Sheet](LARAVEL-COMPONENTS-CHEAT-SHEET.md)
 2. **Segui** le regole d'oro per ogni componentistica
 3. **Applica** i pattern alternativi per evitare anti-pattern
-4. **Usa** il Service Layer come cuore logico dell'applicazione
+4. **Usa** il Service Layer come core logico dell'applicazione
 
 ## Struttura
 

@@ -755,11 +755,11 @@ class UserServiceTest extends TestCase
 
 ---
 
-## Il Service Layer: Il Cuore Logico di Laravel
+## Il Service Layer: Il Core Logico di Laravel
 
-### Perché il Service è il Cuore dell'Applicazione
+### Perché il Service è il Core dell'Applicazione
 
-Il **Service Layer** rappresenta il **cervello** della tua applicazione Laravel. È qui che vive tutta la logica business, le regole del dominio e l'intelligenza dell'applicazione.
+Il **Service Layer** rappresenta il **core logico** della tua applicazione Laravel. È qui che vive tutta la logica business, le regole del dominio e l'intelligenza dell'applicazione.
 
 ### Architettura a Livelli con Service al Centro
 
@@ -804,7 +804,7 @@ Il **Service Layer** rappresenta il **cervello** della tua applicazione Laravel.
 - **Non gestisce validazione input** → usa Form Request
 - **Non gestisce autenticazione** → usa Middleware/Policy
 
-### Esempio Pratico: Service come Cuore
+### Esempio Pratico: Service come Core
 
 ```php
 // ❌ SBAGLIATO - Logica sparsa nel Controller
@@ -844,7 +844,7 @@ class UserController extends Controller
     }
 }
 
-// ✅ CORRETTO - Service come cuore logico
+// ✅ CORRETTO - Service come core logico
 class UserController extends Controller
 {
     public function __construct(private UserService $userService) {}
@@ -920,25 +920,25 @@ class SendVerificationEmail
 10. Response HTTP al client
 ```
 
-### Vantaggi del Service come Cuore
+### Vantaggi del Service come Core
 
-#### 🧠 **Centralizzazione**
+#### Centralizzazione
 - **Una fonte di verità** per la logica business
 - **Coerenza** tra Controller, Command, Job
 - **Manutenibilità** - modifiche in un posto solo
 
-#### 🔄 **Riusabilità**
+#### Riusabilità
 - **Stesso Service** da Controller, Command, Job
 - **API unificata** per operazioni business
 - **Testabilità** - facile da testare in isolamento
 
-#### 🎯 **Separazione delle Responsabilità**
+#### Separazione delle Responsabilità
 - **Controller**: Gestisce HTTP
 - **Service**: Logica business
 - **Repository**: Accesso dati
 - **Model**: Rappresentazione entità
 
-#### 🚀 **Flessibilità**
+#### Flessibilità
 - **Cambiamenti** senza impatto su altri layer
 - **Evoluzione** del dominio senza rotture
 - **Testing** indipendente per ogni layer
@@ -1057,7 +1057,7 @@ class OrderService
 
 ### Conclusione
 
-Il **Service Layer** è il **cuore pulsante** della tua applicazione Laravel. È qui che vive l'intelligenza del dominio, dove si prendono le decisioni importanti e dove si coordina tutto il sistema.
+Il **Service Layer** è il **core logico** della tua applicazione Laravel. È qui che vive l'intelligenza del dominio, dove si prendono le decisioni importanti e dove si coordina tutto il sistema.
 
 **Ricorda**: Se hai logica business, va nel Service. Se non hai logica business, probabilmente non ti serve un Service.
 
