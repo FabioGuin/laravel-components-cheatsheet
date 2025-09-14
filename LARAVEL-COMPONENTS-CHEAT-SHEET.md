@@ -1,6 +1,6 @@
 # Laravel Components Cheat Sheet
 
-> **Riferimento rapido** per le componentistiche principali di Laravel e le regole d'oro per utilizzarle correttamente
+> **Riferimento rapido** per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente
 
 ## Indice Rapido
 
@@ -37,7 +37,7 @@
 - **Risolve automaticamente** le dipendenze tramite dependency injection
 - **Registra e risolve** servizi, binding e istanze
 
-### Regole d'oro
+### Best Practices
 - ✅ **Usa sempre dependency injection** per risolvere dipendenze
 - ✅ **Registra servizi nei Service Provider** con `$this->app->bind()`
 - ✅ **Usa interfacce** per i binding per maggiore flessibilità
@@ -88,7 +88,7 @@ class UserController extends Controller
 - **Bootstrap dell'applicazione** - inizializza servizi all'avvio
 - **Binding di interfacce** - collega contratti alle implementazioni
 
-### Regole d'oro
+### Best Practices
 - ✅ **Un provider per funzionalità** o package specifico
 - ✅ **Usa `register()` per binding** e `boot()` per inizializzazione
 - ✅ **Registra sempre interfacce** invece di classi concrete
@@ -130,7 +130,7 @@ class PaymentServiceProvider extends ServiceProvider
 - **Orchestrazione** di repository, eventi e altri servizi
 - **Separazione delle responsabilità** dal controller
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una responsabilità per servizio** - Single Responsibility Principle
 - ✅ **Usa dependency injection** per le dipendenze
 - ✅ **Lancia eccezioni specifiche** per errori business
@@ -167,7 +167,7 @@ class UserService
 - **Testabilità** - facile da mockare per i test
 - **Indipendenza dall'implementazione** - puoi cambiare da Eloquent a MongoDB, API, file, etc.
 
-### Regole d'oro
+### Best Practices
 - ✅ **Un repository per entità** o aggregate
 - ✅ **Usa interfacce** per i contratti
 - ✅ **Restituisci DTO o entità di dominio** per vera astrazione
@@ -219,7 +219,7 @@ interface UserRepositoryInterface
 - **Active Record pattern** - ogni istanza rappresenta una riga
 - **Gestione delle relazioni** tra entità
 
-### Regole d'oro
+### Best Practices
 - ✅ **Un model per tabella** del database
 - ✅ **Usa `$fillable` o `$guarded`** per la mass assignment protection
 - ✅ **Definisci relazioni** come metodi
@@ -268,7 +268,7 @@ class User extends Model
 - **Coordina** tra service, repository e view
 - **Applica middleware** per autenticazione e autorizzazione
 
-### Regole d'oro
+### Best Practices
 - ✅ **Mantieni i controller magri** - logica business nei service
 - ✅ **Usa Resource Controllers** per operazioni CRUD standard
 - ✅ **Usa Form Request** per validazione
@@ -309,7 +309,7 @@ class UserController extends Controller
 - **Applica logica cross-cutting** (auth, CORS, logging)
 - **Modifica request/response** in modo trasparente
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una responsabilità per middleware** - Single Responsibility
 - ✅ **Usa middleware groups** per raggruppare logica correlata
 - ✅ **Applica middleware** a route specifiche quando possibile
@@ -350,7 +350,7 @@ class AuthenticateMiddleware
 - **Autorizzazione** delle richieste
 - **Sanitizzazione** dei dati
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una Form Request per endpoint** specifico
 - ✅ **Usa regole di validazione** appropriate
 - ✅ **Implementa `authorize()`** per controlli di accesso
@@ -388,7 +388,7 @@ class CreateUserRequest extends FormRequest
 - **Nasconde i dettagli** interni del database
 - **Fornisce API consistenti** e versionabili
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una Resource per entità** specifica
 - ✅ **Usa `with()`** per includere relazioni
 - ✅ **Usa `when()`** per dati condizionali
@@ -423,7 +423,7 @@ class UserResource extends JsonResource
 - **Comunicazione asincrona** tra servizi
 - **Logica reattiva** basata su eventi
 
-### Regole d'oro
+### Best Practices
 - ✅ **Eventi per azioni** che sono successe (UserCreated, OrderPaid)
 - ✅ **Listener per reazioni** agli eventi (SendEmail, UpdateInventory)
 - ✅ **Usa Job** per listener che richiedono tempo
@@ -457,7 +457,7 @@ class SendWelcomeEmail
 - **Gestione delle code** per distribuire il carico
 - **Retry automatico** per operazioni fallite
 
-### Regole d'oro
+### Best Practices
 - ✅ **Job per operazioni** che richiedono tempo
 - ✅ **Implementa `failed()`** per gestire errori
 - ✅ **Usa `timeout` e `tries`** appropriati
@@ -503,7 +503,7 @@ class SendEmailJob implements ShouldQueue
 - **Logica di accesso** centralizzata
 - **Controllo permessi** basato su contesto
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una Policy per modello** o risorsa
 - ✅ **Metodi specifici** per azioni (view, create, update, delete)
 - ✅ **Usa `before()`** per controlli globali
@@ -544,7 +544,7 @@ class PostPolicy
 - **Ereditarietà** e composizione di template
 - **Componenti riutilizzabili** per UI
 
-### Regole d'oro
+### Best Practices
 - ✅ **Layout principale** per struttura comune
 - ✅ **Componenti** per elementi riutilizzabili
 - ✅ **Sections** per contenuto specifico
@@ -575,7 +575,7 @@ class UserCard extends Component
 - **Generazione codice** e file boilerplate
 - **Operazioni di manutenzione** dell'applicazione
 
-### Regole d'oro
+### Best Practices
 - ✅ **Un comando per task** specifico
 - ✅ **Usa `handle()`** per la logica principale
 - ✅ **Opzioni e argomenti** per configurazione
@@ -612,7 +612,7 @@ class CreateUserCommand extends Command
 - **Sincronizzazione** tra ambienti
 - **Rollback** delle modifiche
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una migration per modifica** specifica
 - ✅ **Nomi descrittivi** per le migration
 - ✅ **Implementa `down()`** per rollback
@@ -653,7 +653,7 @@ class CreateUsersTable extends Migration
 - **Dati di base** per l'applicazione
 - **Dati di esempio** per sviluppo
 
-### Regole d'oro
+### Best Practices
 - ✅ **Un seeder per modello** specifico
 - ✅ **Usa Model Factories** per dati casuali
 - ✅ **Dati consistenti** e riproducibili
@@ -687,7 +687,7 @@ class UserSeeder extends Seeder
 - **Dati realistici** per sviluppo
 - **Varianti** di dati per test
 
-### Regole d'oro
+### Best Practices
 - ✅ **Una factory per modello** specifico
 - ✅ **Dati realistici** e variabili
 - ✅ **Usa `faker`** per dati casuali
@@ -727,7 +727,7 @@ class UserFactory extends Factory
 - **Prevenzione regressioni** durante lo sviluppo
 - **Documentazione vivente** del codice
 
-### Regole d'oro
+### Best Practices
 - ✅ **Test per ogni funzionalità** importante
 - ✅ **Test isolati** - non dipendenti tra loro
 - ✅ **Usa mocks** per dipendenze esterne
@@ -943,7 +943,7 @@ class SendVerificationEmail
 - **Evoluzione** del dominio senza rotture
 - **Testing** indipendente per ogni layer
 
-### Regole d'Oro per il Service Layer
+### Best Practices per il Service Layer
 
 #### ✅ **DO (Cosa Fare):**
 - **Una responsabilità per Service** - Single Responsibility
@@ -1063,7 +1063,7 @@ Il **Service Layer** è il **core logico** della tua applicazione Laravel. È qu
 
 ---
 
-## Regole d'Oro Generali
+## Best Practices Generali
 
 ### 1. Separation of Concerns
 - **Controller**: Gestisce HTTP, coordina servizi
@@ -1174,4 +1174,4 @@ class Helper
 
 ---
 
-*Questo cheat sheet fornisce una panoramica rapida delle componentistiche principali di Laravel e le regole d'oro per utilizzarle correttamente. Per implementazioni dettagliate e esempi completi, consulta i pattern specifici nella documentazione.*
+*Questo cheat sheet fornisce una panoramica rapida delle componentistiche principali di Laravel e le best practices per utilizzarle correttamente. Per implementazioni dettagliate e esempi completi, consulta i pattern specifici nella documentazione.*

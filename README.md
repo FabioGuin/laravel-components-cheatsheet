@@ -1,6 +1,6 @@
 # Laravel Components Cheat Sheet
 
-> **Riferimento rapido** per le componentistiche principali di Laravel e le regole d'oro per utilizzarle correttamente
+> **Riferimento rapido** per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente
 
 [![Laravel](https://img.shields.io/badge/Laravel-9+-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
@@ -8,12 +8,12 @@
 
 ## Panoramica
 
-Questo cheat sheet fornisce una guida completa e pratica per le componentistiche principali di Laravel, con focus sulle **regole d'oro** e le **best practices** per utilizzarle correttamente.
+Questo cheat sheet fornisce una guida completa e pratica per le componentistiche principali di Laravel, con focus sulle **best practices** per utilizzarle correttamente.
 
 ## Obiettivo
 
 - **Riferimento rapido** per sviluppatori Laravel
-- **Regole d'oro** per ogni componentistica
+- **Best Practices** per ogni componentistica
 - **Esempi pratici** di codice corretto e sbagliato
 - **Pattern alternativi** per ogni anti-pattern
 - **Service Layer** come core logico dell'applicazione
@@ -44,13 +44,13 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 ### Sezioni Speciali
 
 - **Il Service Layer: Il Core Logico** - Approfondimento sul ruolo centrale del Service
-- **Regole d'Oro Generali** - Principi SOLID, DRY, KISS, YAGNI
+- **Best Practices Generali** - Principi SOLID, DRY, KISS, YAGNI
 - **Quick Reference** - Flusso tipico e pattern di utilizzo
 
 ## Come Usare
 
 1. **Consulta** il [Laravel Components Cheat Sheet](LARAVEL-COMPONENTS-CHEAT-SHEET.md)
-2. **Segui** le regole d'oro per ogni componentistica
+2. **Segui** le best practices per ogni componentistica
 3. **Applica** i pattern alternativi per evitare anti-pattern
 4. **Usa** il Service Layer come core logico dell'applicazione
 
@@ -66,7 +66,7 @@ Laravel-Components-CheatSheet/
 
 ## Caratteristiche
 
-- ✅ **Regole d'oro** per ogni componentistica
+- ✅ **Best Practices** per ogni componentistica
 - ✅ **Esempi pratici** di codice corretto e sbagliato
 - ✅ **Pattern alternativi** per ogni anti-pattern
 - ✅ **Approfondimento** sul Service Layer
