@@ -819,7 +819,7 @@ Controller
      ↓
 Service Layer (CORE LOGIC) ←──┐
      ↓                        │
-Data Layer (Repository)       │
+Data Layer (Model/Repository) │
      ↓                        │
 Output Layer (Resource/Blade) │
      ↓                        │
@@ -837,13 +837,13 @@ HTTP Response                 │
                     ↓
             Service Layer (CORE LOGIC)
                     ↓
-            Data Layer (Repository)
+            Data Layer (Model/Repository)
 ```
 
 #### Caratteristiche Chiave
 
 - **Service Layer** = **Core Logico** accessibile da qualsiasi entry point
-- **Data Layer** = Accesso ai dati, chiamabile da Service o direttamente
+- **Data Layer** = Accesso ai dati (Model Eloquent o Repository), chiamabile da Service o direttamente
 - **Controller** = Solo uno dei possibili entry point, non l'unico
 - **Flessibilità** = Ogni entry point può accedere ai layer sottostanti
 
