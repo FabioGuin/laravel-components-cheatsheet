@@ -135,7 +135,7 @@ class PaymentServiceProvider extends ServiceProvider
 - ✅ **Usa dependency injection** per le dipendenze
 - ✅ **Lancia eccezioni specifiche** per errori business
 - ✅ **Usa eventi** per comunicare con altri servizi
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 - ❌ **Non fare logica di presentazione** → **usa DTO o API Resources**
 
 ### Esempi pratici
@@ -238,7 +238,7 @@ class MongoUserRepository implements UserRepositoryInterface
 - ✅ **Usa accessors e mutators** per trasformare dati
 - ✅ **Usa scopes** per query riutilizzabili
 - ❌ **Non fare logica business complessa** nei model → **usa Service Layer**
-- ❌ **Non accedere direttamente** ad altre tabelle non correlate → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** ad altre tabelle non correlate → **usa relazioni Eloquent**
 
 #### Eccezioni
 - **Accessor/Mutator**: Può fare logica di trasformazione dati
@@ -314,7 +314,7 @@ class User extends Model
 - ✅ **Restituisci Resource** per API consistenti
 - ✅ **Un controller per risorsa** - gestisce una entità specifica
 - ❌ **Non fare logica business** nei controller → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 #### Eccezioni
 - **CRUD Controller**: Può gestire più azioni correlate (index, show, store, update, destroy)
@@ -354,7 +354,7 @@ class UserController extends Controller
 - ✅ **Applica middleware** a route specifiche quando possibile
 - ✅ **Restituisci response** o chiama `$next()`
 - ❌ **Non fare logica business** nel middleware → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 #### Eccezioni (Middleware che possono accedere al database)
 - **Authentication**: Può accedere al database per verificare utenti
@@ -395,7 +395,7 @@ class AuthenticateMiddleware
 - ✅ **Implementa `authorize()`** per controlli di accesso
 - ✅ **Usa `messages()`** per messaggi personalizzati
 - ❌ **Non fare logica business** nella Form Request → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 ### Esempi pratici
 ```php
@@ -433,7 +433,7 @@ class CreateUserRequest extends FormRequest
 - ✅ **Usa `when()`** per dati condizionali
 - ✅ **Usa `makeHidden()`** per nascondere campi sensibili
 - ❌ **Non fare logica business** nelle Resource → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 ### Esempi pratici
 ```php
@@ -548,7 +548,7 @@ class SendEmailJob implements ShouldQueue
 - ✅ **Usa `before()`** per controlli globali
 - ✅ **Policy per logica complessa**, Gates per logica semplice
 - ❌ **Non fare logica business** nelle Policy → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 ### Esempi pratici
 ```php
@@ -589,7 +589,7 @@ class PostPolicy
 - ✅ **Sections** per contenuto specifico
 - ✅ **Directives personalizzate** per logica complessa
 - ❌ **Non fare logica business** nei template → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 ### Esempi pratici
 ```php
@@ -620,7 +620,7 @@ class UserCard extends Component
 - ✅ **Opzioni e argomenti** per configurazione
 - ✅ **Output informativo** per l'utente
 - ❌ **Non fare logica business** nei comandi → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
+- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
 ### Esempi pratici
 ```php
@@ -859,7 +859,7 @@ HTTP Response                 │
 
 #### Cosa NON fa il Service:
 - **Non gestisce HTTP** → usa Controller
-- **Non accede direttamente al DB** → usa Repository
+- **Non accede direttamente al DB** → usa Model o Repository
 - **Non formatta dati per API** → usa Resource
 - **Non gestisce validazione input** → usa Form Request
 - **Non gestisce autenticazione** → usa Middleware/Policy
@@ -1211,16 +1211,15 @@ class Helper
 2. **Middleware** → filtra la richiesta
 3. **Form Request** → valida i dati (se presente)
 4. **Controller** → riceve la richiesta
-5. **Service** → esegue logica business
-6. **Repository** → accede ai dati
-7. **Model** → rappresenta l'entità
-8. **Resource** → trasforma per API
-9. **Response** → restituisce al client
+5. **Service** → esegue logica business (se necessario)
+6. **Model/Repository** → accede ai dati
+7. **Resource** → trasforma per API
+8. **Response** → restituisce al client
 
 ### Componenti per responsabilità
 - **HTTP**: Controller, Middleware, Form Request
 - **Business**: Service, Event, Listener
-- **Data**: Repository, Model, Migration
+- **Data**: Model, Repository, Migration
 - **API**: Resource, API Resource
 - **Background**: Job, Queue
 - **Auth**: Policy, Gate, Middleware
