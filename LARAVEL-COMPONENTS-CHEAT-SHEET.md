@@ -809,36 +809,73 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 
 #### Flusso Principale HTTP
 ```
-HTTP Request
-     ↓
-Route + Middleware
-     ↓
-Form Request (Validazione)
-     ↓
-Controller
-     ↓
-Service Layer (CORE LOGIC) ←──┐
-     ↓                        │
-Data Layer (Model/Repository) │
-     ↓                        │
-Output Layer (Resource/Blade) │
-     ↓                        │
-HTTP Response                 │
-                              │
-                              │
-                    ┌─────────┘
-                    │
-                    ▼
-            Altri Entry Points:
-            • Commands
-            • Jobs  
-            • Listeners
-            • Scheduled Tasks
-                    ↓
-            Service Layer (CORE LOGIC)
-                    ↓
-            Data Layer (Model/Repository)
+┌───────────┐   ┌───────────────┐   ┌──────────────┐
+│   Route   │ → │   Midlleware  │ → │ Form Request │
+└─────┬─────┘   └───────┬───────┘   └──────┬───────┘
+      │                 │                  │
+      └─────────────────┴─────────┬────────┘
+                                  ▼
+                          ┌───────────────┐
+                          │  Controller   │
+                          └───────┬───────┘
+                                  ├───────────────────┐
+                                  ▼                   │
+                       ┌─────────────────────┐        │
+                       │   Service Layer     │        │
+                       │  (Business Logic)   │        │
+                       └───────┬─────────────┘        │
+                               │                      │
+                               ├─→ Emette Evento      │
+                               │   (Dominio)          │
+                               │        │             │
+                               │        ▼             │
+                               │  ┌─────────────┐     │
+                               │  │  Listener   │     │
+                               │  └──────┬──────┘     │
+                               │         ▼            │
+                               │  ┌─────────────┐     │
+                               │  │ Altri       │     │
+                               │  │ Service     │     │
+                               ▼  └─────────────┘     │
+                       ┌───────▼─────┐                │
+                       │  Data Layer │                │
+                       │  Model/Repo │                │
+                       └───────┬─────┘                │
+                               │                      │
+                               ├─→ Emette Evento      │
+                               │   (Dati)             │
+                               │        │             │
+                               │        ▼             │
+                               │  ┌─────────────┐     │
+                               │  │  Listener   │     │
+                               │  └──────┬──────┘     │
+                               │         ▼            │
+                               │  ┌─────────────┐     │
+                               │  │ Altri       │     │
+                               │  │ Service     │     │
+                               ▼  └─────────────┘     │
+                       ┌──────────────────────────┐   │
+                       │      Response Layer      │←──┘
+                       │ (Resource/View/Redirect) │
+                       └──────────┬───────────────┘
+                                  ▼
+                       ┌──────────────────────────┐
+                       │       HTTP RESPONSE      │
+                       │  (JSON/HTML/StatusCode)  │
+                       └──────────────────────────┘
+
 ```
+🔑 Legenda:
+- **Evento (Dominio)**: Eventi legati alla business logic (es: OrderShipped, UserRegistered)
+- **Evento (Dati)**: Eventi legati a operazioni CRUD (es: UserCreated, PostUpdated)
+- **Listener**: Reagiscono agli eventi e coordinano altri service
+- **Response Layer**: Trasforma i dati in formato adatto (JSON/HTML)
+
+**Note Importanti:**
+1. Il Controller può bypassare il Service Layer per operazioni semplici
+2. I Listener devono essere leggeri e delegare la logica complessa ai Service
+3. Gli eventi possono essere sincroni o asincroni (configurabili in `EventServiceProvider`)
+4. La Response Layer gestisce anche redirect e errori
 
 #### Caratteristiche Chiave
 
