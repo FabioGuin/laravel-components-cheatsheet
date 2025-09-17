@@ -2,6 +2,23 @@
 
 > **Riferimento rapido** per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente
 
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="Laravel Components Cheat Sheet">
+<meta property="og:description" content="Riferimento rapido per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente">
+<meta property="og:image" content="https://raw.githubusercontent.com/FabioGuin/Laravel-Components-CheatSheet/main/assets/hero-image.png">
+<meta property="og:image:width" content="1020">
+<meta property="og:image:height" content="458">
+<meta property="og:image:alt" content="Laravel Components Cheat Sheet - Guida completa alle componentistiche Laravel">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/FabioGuin/Laravel-Components-CheatSheet">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Laravel Components Cheat Sheet">
+<meta name="twitter:description" content="Riferimento rapido per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/FabioGuin/Laravel-Components-CheatSheet/main/assets/hero-image.png">
+<meta name="twitter:image:alt" content="Laravel Components Cheat Sheet - Guida completa alle componentistiche Laravel">
+
 <div align="center">
   <img src="assets/hero-image.png" alt="Laravel Components Cheat Sheet" width="800" />
 </div>
