@@ -81,10 +81,10 @@ Laravel-Components-CheatSheet/
 
 ## Link Utili
 
-- [Laravel Documentation](https://laravel.com/docs)
-- [Laravel Best Practices](https://laravel.com/docs/best-practices)
-- [Laravel Service Container](https://laravel.com/docs/container)
-- [Laravel Service Providers](https://laravel.com/docs/providers)
+- [Laravel Documentation](https://laravel.com/docs/12.x)
+- [Laravel Service Container](https://laravel.com/docs/12.x/container)
+- [Laravel Service Providers](https://laravel.com/docs/12.x/providers)
+- [Laravel Contributing Guide](https://laravel.com/docs/12.x/contributions)
 
 ## Contribuire
 
