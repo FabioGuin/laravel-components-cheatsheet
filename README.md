@@ -2,6 +2,10 @@
 
 > **Riferimento rapido** per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente
 
+<div align="center">
+  <img src="assets/hero-image.png" alt="Laravel Components Cheat Sheet" width="800" />
+</div>
+
 [![Laravel](https://img.shields.io/badge/Laravel-9+-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
@@ -61,6 +65,8 @@ Laravel-Components-CheatSheet/
 ├── README.md                           # Questo file
 ├── LARAVEL-COMPONENTS-CHEAT-SHEET.md  # Cheat sheet principale
 ├── LICENSE                             # Licenza Apache 2.0
+├── assets/                             # Risorse grafiche
+│   └── hero-image.png                  # Immagine HERO
 └── .gitignore                          # File da ignorare
 ```
 
