@@ -25,6 +25,7 @@
 18. [Test](#18-test)
 
 ### Sezioni Speciali
+- [Il Service Layer: Il Core Logico di Laravel](#il-service-layer-il-core-logico-di-laravel)
 - [Best Practices Generali](#best-practices-generali)
 - [Quick Reference](#quick-reference)
 
