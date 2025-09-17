@@ -809,63 +809,64 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 
 #### Flusso Principale HTTP
 ```
-┌───────────┐   ┌───────────────┐   ┌──────────────┐
-│   Route   │ → │   Midlleware  │ → │ Form Request │
-└─────┬─────┘   └───────┬───────┘   └──────┬───────┘
-      │                 │                  │
-      └─────────────────┴─────────┬────────┘
-                                  ▼
-                          ┌───────────────┐
-                          │  Controller   │
-                          └───────┬───────┘
-                                  ├───────────────────┐
-                                  ▼                   │
-                       ┌─────────────────────┐        │
-                       │   Service Layer     │        │
-                       │  (Business Logic)   │        │
-                       └───────┬─────────────┘        │
-                               │                      │
-                               ├─→ Emette Evento      │
-                               │   (Dominio)          │
-                               │        │             │
-                               │        ▼             │
-                               │  ┌─────────────┐     │
-                               │  │  Listener   │     │
-                               │  └──────┬──────┘     │
-                               │         ▼            │
-                               │  ┌─────────────┐     │
-                               │  │ Altri       │     │
-                               │  │ Service     │     │
-                               ▼  └─────────────┘     │
-                       ┌───────▼─────┐                │
-                       │  Data Layer │                │
-                       │  Model/Repo │                │
-                       └───────┬─────┘                │
-                               │                      │
-                               ├─→ Emette Evento      │
-                               │   (Dati)             │
-                               │        │             │
-                               │        ▼             │
-                               │  ┌─────────────┐     │
-                               │  │  Listener   │     │
-                               │  └──────┬──────┘     │
-                               │         ▼            │
-                               │  ┌─────────────┐     │
-                               │  │ Altri       │     │
-                               │  │ Service     │     │
-                               ▼  └─────────────┘     │
-                       ┌──────────────────────────┐   │
-                       │      Response Layer      │←──┘
-                       │ (Resource/View/Redirect) │
-                       └──────────┬───────────────┘
-                                  ▼
-                       ┌──────────────────────────┐
-                       │       HTTP RESPONSE      │
-                       │  (JSON/HTML/StatusCode)  │
-                       └──────────────────────────┘
+┌─────────────────┐   ┌───────────┐   ┌───────────────┐   ┌──────────────┐
+│ HTTP Request    │ → │   Route   │ → │   Middleware  │ → │ Form Request │
+│ (GET/POST/etc)  │   └─────┬─────┘   └───────┬───────┘   └──────┬───────┘
+└─────────────────┘         │                 │                  │
+                            │                 │                  │
+                            └─────────────────┴─────────┬────────┘
+                                                        ▼
+                                                ┌───────────────┐
+                                                │  Controller   │
+                                                └───────┬───────┘
+                                                        ├────────────────┐
+                                                        ▼                │
+                                         ┌─────────────────────┐         │
+                                         │   Service Layer     │         │
+                                         │  (Business Logic)   │         │
+                                         └────────┬────────────┘         │
+                                                  │                      │
+                                                  ├─→ Emette Evento      │
+                                                  │   (Dominio)          │
+                                                  │        │             │
+                                                  │        ▼             │
+                                                  │  ┌─────────────┐     │
+                                                  │  │  Listener   │     │
+                                                  │  └──────┬──────┘     │
+                                                  │         ▼            │
+                                                  │  ┌─────────────┐     │
+                                                  │  │ Altri       │     │
+                                                  │  │ Service     │     │
+                                                  ▼  └─────────────┘     │
+                                         ┌────────▼─────┐                │
+                                         │  Data Layer  │                │
+                                         │  Model/Repo  │                │
+                                         └────────┬─────┘                │
+                                                  │                      │
+                                                  ├─→ Emette Evento      │
+                                                  │   (Dati)             │
+                                                  │        │             │
+                                                  │        ▼             │
+                                                  │  ┌─────────────┐     │
+                                                  │  │  Listener   │     │
+                                                  │  └──────┬──────┘     │
+                                                  │         ▼            │
+                                                  │  ┌─────────────┐     │
+                                                  │  │ Altri       │     │
+                                                  │  │ Service     │     │
+                                                  ▼  └─────────────┘     │
+                                         ┌──────────────────────────┐    │
+                                         │      Response Layer      │←───┘
+                                         │ (Resource/View/Redirect) │
+                                         └────────┬─────────────────┘
+                                                  ▼
+                                         ┌──────────────────────────┐
+                                         │       HTTP RESPONSE      │
+                                         │  (JSON/HTML/StatusCode)  │
+                                         └──────────────────────────┘
 
 ```
-🔑 Legenda:
+**Legenda:**
 - **Evento (Dominio)**: Eventi legati alla business logic (es: OrderShipped, UserRegistered)
 - **Evento (Dati)**: Eventi legati a operazioni CRUD (es: UserCreated, PostUpdated)
 - **Listener**: Reagiscono agli eventi e coordinano altri service
@@ -1005,18 +1006,57 @@ class SendVerificationEmail
 ### Flusso Tipico con Service al Centro
 
 ```
-1. Route definisce URL e metodo
-2. Middleware filtra la richiesta
-3. Form Request valida i dati (se presente)
-4. Controller riceve la richiesta
-5. Controller chiama Service
-6. Service applica logica business
-7. Service coordina Repository per i dati
-8. Service lancia eventi per comunicare
-9. Listener gestiscono le conseguenze
-10. Service restituisce risultato
-11. Controller restituisce Resource
-12. Response HTTP al client
+1. HTTP Request arriva al server
+   → Input: Richiesta HTTP (URL, metodo, headers, body)
+   → Output: Richiesta processata
+
+2. Route definisce URL e metodo
+   → Input: Richiesta HTTP
+   → Output: Controller e metodo specifico da chiamare
+
+3. Middleware filtra la richiesta
+   → Input: Richiesta HTTP + Controller destinazione
+   → Output: Richiesta filtrata (auth, CORS, logging, etc.)
+
+4. Form Request valida i dati (se presente)
+   → Input: Richiesta filtrata + dati da validare
+   → Output: Dati validati e sanitizzati
+
+5. Controller riceve la richiesta
+   → Input: Richiesta validata + parametri
+   → Output: Chiamata al Service Layer
+
+6. Controller chiama Service
+   → Input: Dati validati + parametri business
+   → Output: Delegazione logica business
+
+7. Service applica logica business
+   → Input: Dati business + regole del dominio
+   → Output: Risultato business + eventi emessi
+
+8. Service coordina Repository per i dati
+   → Input: Operazioni CRUD + query business
+   → Output: Dati dal database + eventi di dati
+
+9. Service lancia eventi per comunicare
+   → Input: Eventi di dominio + eventi di dati
+   → Output: Notifiche a Listener
+
+10. Listener gestiscono le conseguenze
+    → Input: Eventi ricevuti
+    → Output: Azioni reattive (email, log, cache, etc.)
+
+11. Service restituisce risultato
+    → Input: Dati processati + logica applicata
+    → Output: Entità del dominio o DTO
+
+12. Controller restituisce Resource
+    → Input: Entità del dominio
+    → Output: Dati formattati per API (JSON/XML)
+
+13. Response HTTP al client
+    → Input: Dati formattati + headers
+    → Output: Risposta HTTP completa (status, body, headers)
 ```
 
 ### Vantaggi del Service come Core
@@ -1244,14 +1284,15 @@ class Helper
 ## Quick Reference
 
 ### Flusso tipico di una richiesta
-1. **Route** → definisce URL e metodo
-2. **Middleware** → filtra la richiesta
-3. **Form Request** → valida i dati (se presente)
-4. **Controller** → riceve la richiesta
-5. **Service** → esegue logica business (se necessario)
-6. **Model/Repository** → accede ai dati
-7. **Resource** → trasforma per API
-8. **Response** → restituisce al client
+1. **HTTP Request** → arriva al server
+2. **Route** → definisce URL e metodo
+3. **Middleware** → filtra la richiesta
+4. **Form Request** → valida i dati (se presente)
+5. **Controller** → riceve la richiesta
+6. **Service** → esegue logica business (se necessario)
+7. **Model/Repository** → accede ai dati
+8. **Resource** → trasforma per API
+9. **Response** → restituisce al client
 
 ### Componenti per responsabilità
 - **HTTP**: Controller, Middleware, Form Request
