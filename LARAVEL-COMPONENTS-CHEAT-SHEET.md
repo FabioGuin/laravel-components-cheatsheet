@@ -167,48 +167,60 @@ class UserService
 - **Testabilità** - facile da mockare per i test
 - **Indipendenza dall'implementazione** - puoi cambiare da Eloquent a MongoDB, API, file, etc.
 
-### Best Practices
-- ✅ **Un repository per entità** o aggregate
-- ✅ **Usa interfacce** per i contratti
-- ✅ **Restituisci DTO o entità di dominio** per vera astrazione
-- ✅ **Implementa query specifiche** come metodi del repository
-- ❌ **Non fare logica business** nel repository → **usa Service Layer**
-- ❌ **Non accedere a più tabelle** non correlate → **usa Unit of Work Pattern**
+### Quando usare Repository?
 
-#### Eccezioni
-- **Laravel Standard**: Può restituire modelli Eloquent per semplicità
-- **Legacy Code**: Può usare modelli Eloquent per compatibilità
-- **Simple Apps**: Per applicazioni semplici, modelli Eloquent sono accettabili
-- **API Resources**: Può restituire modelli Eloquent se usi API Resources
-
-### Esempi pratici
+#### ✅ **Serve Repository** - Logica complessa o multi-database
 ```php
-// ✅ CORRETTO - Repository con DTO (vera astrazione)
+// ✅ CORRETTO - Query business complesse
 interface UserRepositoryInterface
 {
-    public function findById(int $id): ?UserDTO;
-    public function findByEmail(string $email): ?UserDTO;
-    public function create(array $data): UserDTO;
+    public function findActiveUsersWithRecentOrders(): Collection;
+    public function findUsersByRoleAndLocation(string $role, string $location): Collection;
 }
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
-    public function findById(int $id): ?UserDTO
+    public function findActiveUsersWithRecentOrders(): Collection
     {
-        $user = User::find($id);
-        return $user ? UserDTO::fromModel($user) : null;
+        return User::where('is_active', true)
+            ->whereHas('orders', function ($query) {
+                $query->where('created_at', '>=', now()->subDays(30));
+            })
+            ->with(['orders' => function ($query) {
+                $query->latest()->limit(5);
+            }])
+            ->get();
     }
 }
 
-// ✅ ACCETTABILE - Repository con modelli Eloquent (Laravel standard)
-interface UserRepositoryInterface
+// ✅ CORRETTO - Multi-database
+class MongoUserRepository implements UserRepositoryInterface
 {
-    public function findById(int $id): ?User;
-    public function findByEmail(string $email): ?User;
-    public function create(array $data): User;
+    public function findById(int $id): ?User
+    {
+        $userData = $this->mongoCollection->findOne(['_id' => $id]);
+        return $userData ? User::fromArray($userData) : null;
+    }
 }
-
 ```
+
+### Best Practices
+- ✅ **Un repository per entità** o aggregate
+- ✅ **Usa interfacce** per i contratti
+- ✅ **Implementa query specifiche** come metodi del repository
+- ❌ **Non fare logica business** nel repository → **usa Service Layer**
+- ❌ **Non accedere a più tabelle** non correlate → **usa Unit of Work Pattern**
+
+### Perché Laravel non usa Repository di default?
+
+**Laravel privilegia semplicità**: Eloquent fornisce già astrazione sufficiente per la maggior parte dei casi. Il Repository Pattern aggiunge un layer extra che spesso non è necessario e può portare a over-engineering.
+
+**Usa Repository quando:**
+- Hai **logica di accesso complessa** (query business-specifiche)
+- Devi gestire **multi-database** (Eloquent + MongoDB + API)
+- Fai **testing intensivo** (mocking delle query)
+- Lavori con **team grandi** (separazione responsabilità)
+- Integri **legacy systems**
 
 ---
 
@@ -259,6 +271,33 @@ class User extends Model
 }
 ```
 
+### Perché Laravel usa Eloquent?
+
+**Eloquent è il cuore dell'accesso ai dati in Laravel** per diverse ragioni strategiche:
+
+#### **Active Record Pattern**
+- **Semplicità** - Ogni model rappresenta una riga del database
+- **Intuitività** - `$user->name` è più chiaro di `$user['name']`
+- **Produttività** - Sviluppo rapido senza configurazioni complesse
+
+#### **Query Builder integrato**
+- **Fluent interface** - `User::where('active', true)->get()`
+- **Relazioni eleganti** - `$user->posts()->where('published', true)`
+- **Eager loading** - `User::with('posts')->get()`
+
+#### **Filosofia Laravel**
+- **Convention over Configuration** - Convenzioni sensate di default
+- **Developer Experience** - Focus sulla produttività del developer
+- **Ecosistema** - Integrazione perfetta con Migration, Seeder, Factory
+
+#### **Vantaggi rispetto ad altri ORM**
+- **Laravel-first** - Progettato specificamente per Laravel
+- **Documentazione eccellente** - Esempi chiari e completi
+- **Community** - Supporto vasto e risorse abbondanti
+- **Evoluzione** - Aggiornamenti costanti e miglioramenti
+
+**Eloquent bilancia perfettamente semplicità e potenza**, rendendo l'accesso ai dati naturale e produttivo senza sacrificare flessibilità.
+
 ---
 
 ## 6. Controller
@@ -283,7 +322,7 @@ class User extends Model
 - **File Upload**: Può gestire upload e validazione file
 - **Pagination**: Può gestire paginazione e filtri semplici
 - **Authentication**: Può gestire login/logout se non complesso
-- **Simple Controllers**: Per operazioni molto semplici può accedere direttamente al model
+- **Simple Controllers**: Per operazioni molto semplici può accedere direttamente al model (solo per CRUD base)
 
 ### Esempi pratici
 ```php
@@ -317,7 +356,7 @@ class UserController extends Controller
 - ❌ **Non fare logica business** nel middleware → **usa Service Layer**
 - ❌ **Non accedere direttamente** al database → **usa Repository Pattern**
 
-#### Eccezioni
+#### Eccezioni (Middleware che possono accedere al database)
 - **Authentication**: Può accedere al database per verificare utenti
 - **Authorization**: Può fare query per verificare permessi
 - **Logging**: Può accedere al database per log delle richieste
@@ -585,15 +624,20 @@ class UserCard extends Component
 
 ### Esempi pratici
 ```php
-// ✅ CORRETTO - Artisan Command
+// ✅ CORRETTO - Artisan Command con Service Layer
 class CreateUserCommand extends Command
 {
     protected $signature = 'user:create {name} {email}';
     protected $description = 'Create a new user';
     
+    public function __construct(private UserService $userService)
+    {
+        parent::__construct();
+    }
+    
     public function handle()
     {
-        $user = User::create([
+        $user = $this->userService->createUser([
             'name' => $this->argument('name'),
             'email' => $this->argument('email'),
         ]);
@@ -763,29 +807,45 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 
 ### Architettura a Livelli con Service al Centro
 
+#### Flusso Principale HTTP
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    PRESENTATION LAYER                       │
-│  Controller │ Form Request │ Resource │ Blade │ Middleware  │
-└─────────────────────┬───────────────────────────────────────┘
-                      │
-┌─────────────────────▼───────────────────────────────────────┐
-│                   SERVICE LAYER (CORE)                      │
-│  UserService │ PaymentService │ OrderService │ EmailService │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │  • Logica Business                                      ││
-│  │  • Regole del Dominio                                   ││
-│  │  • Orchestrazione                                       ││
-│  │  • Coordinamento                                        ││
-│  │  • Decisioni Importanti                                 ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────┬───────────────────────────────────────┘
-                      │
-┌─────────────────────▼───────────────────────────────────────┐
-│                    DATA LAYER                               │
-│  Repository │ Model │ Migration │ Seeder │ Factory          │
-└─────────────────────────────────────────────────────────────┘
+HTTP Request
+     ↓
+Route + Middleware
+     ↓
+Form Request (Validazione)
+     ↓
+Controller
+     ↓
+Service Layer (CORE LOGIC) ←──┐
+     ↓                        │
+Data Layer (Repository)       │
+     ↓                        │
+Output Layer (Resource/Blade) │
+     ↓                        │
+HTTP Response                 │
+                              │
+                              │
+                    ┌─────────┘
+                    │
+                    ▼
+            Altri Entry Points:
+            • Commands
+            • Jobs  
+            • Listeners
+            • Scheduled Tasks
+                    ↓
+            Service Layer (CORE LOGIC)
+                    ↓
+            Data Layer (Repository)
 ```
+
+#### Caratteristiche Chiave
+
+- **Service Layer** = **Core Logico** accessibile da qualsiasi entry point
+- **Data Layer** = Accesso ai dati, chiamabile da Service o direttamente
+- **Controller** = Solo uno dei possibili entry point, non l'unico
+- **Flessibilità** = Ogni entry point può accedere ai layer sottostanti
 
 ### Caratteristiche del Service Layer
 
@@ -908,16 +968,18 @@ class SendVerificationEmail
 ### Flusso Tipico con Service al Centro
 
 ```
-1. Controller riceve richiesta HTTP
-2. Form Request valida i dati
-3. Controller chiama Service
-4. Service applica logica business
-5. Service coordina Repository per i dati
-6. Service lancia eventi per comunicare
-7. Listener gestiscono le conseguenze
-8. Service restituisce risultato
-9. Controller restituisce Resource
-10. Response HTTP al client
+1. Route definisce URL e metodo
+2. Middleware filtra la richiesta
+3. Form Request valida i dati (se presente)
+4. Controller riceve la richiesta
+5. Controller chiama Service
+6. Service applica logica business
+7. Service coordina Repository per i dati
+8. Service lancia eventi per comunicare
+9. Listener gestiscono le conseguenze
+10. Service restituisce risultato
+11. Controller restituisce Resource
+12. Response HTTP al client
 ```
 
 ### Vantaggi del Service come Core
@@ -1147,8 +1209,8 @@ class Helper
 ### Flusso tipico di una richiesta
 1. **Route** → definisce URL e metodo
 2. **Middleware** → filtra la richiesta
-3. **Controller** → riceve la richiesta
-4. **Form Request** → valida i dati
+3. **Form Request** → valida i dati (se presente)
+4. **Controller** → riceve la richiesta
 5. **Service** → esegue logica business
 6. **Repository** → accede ai dati
 7. **Model** → rappresenta l'entità
