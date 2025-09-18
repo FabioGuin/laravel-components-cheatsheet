@@ -921,7 +921,7 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
                                          │      Output Layer        │←───┘
                                          │ (Resource/Blade/Redirect)│
                                          └────────┬─────────────────┘
-                                                   ▼
+                                                  ▼
                                          ┌──────────────────────────┐
                                          │      HTTP Response       │
                                          │  (JSON/HTML/StatusCode)  │
