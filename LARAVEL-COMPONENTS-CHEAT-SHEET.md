@@ -36,30 +36,30 @@
 
 ### Principi Fondamentali
 
-#### 🎯 **Separation of Concerns**
+### Separation of Concerns
 - **Controller**: Coordina HTTP (riceve → delega → risponde)
 - **Service**: Logica business, regole del dominio
 - **Repository**: Accesso dati, astrazione database
 - **Model**: Rappresentazione entità, relazioni
 
-#### 🔄 **Dependency Injection**
+### Dependency Injection
 - **Sempre** usa dependency injection per risolvere dipendenze
 - **Mai** `new` o `app()` nel codice applicativo
 - **Interfacce** per i binding nel container
 
-#### 🚫 **Logica Business**
+### Logica Business
 - **Solo nel Service Layer** - centralizza regole del dominio
 - **Non in Controller, Middleware, Form Request, Resource, Policy, Blade, Command, Migration, Seeder, Factory**
 - **Eccezioni**: Accessor/Mutator, Scopes, Eventi Model, Validation
 
-#### 📊 **Accesso ai Dati**
+### Accesso ai Dati
 - **Default**: Usa Eloquent (sufficiente per 80% dei casi)
 - **Repository**: Solo per query complesse o multi-database
 - **Service** → usa Model Eloquent o Repository
 - **Controller** → delega al Service (eccezione: CRUD base senza logica business)
 - **Altri componenti** → usa Model Eloquent o Repository
 
-#### ⚡ **Single Responsibility**
+### Single Responsibility
 - **Una classe, una responsabilità**
 - **Un metodo, una azione**
 - **Un file, un concetto**
@@ -78,7 +78,7 @@
 - ✅ **Usa interfacce** per i binding per maggiore flessibilità
 - ❌ **Non fare binding** nel codice applicativo → **usa Service Provider**
 
-#### Eccezioni alla Dependency Injection
+### Eccezioni alla Dependency Injection
 - **Trait**: Non hanno costruttore → usa `app()` o metodi statici
 - **Closure/Anonymous functions**: Usa `app()` per risolvere dipendenze
 - **Static methods**: Usa `app()` quando necessario
@@ -127,7 +127,7 @@ class UserController extends Controller
 - ✅ **Usa `singleton()` per servizi costosi** che non cambiano stato
 - ❌ **Non registrare servizi** che non servono sempre → **usa lazy loading**
 
-#### Eccezioni
+### Eccezioni
 - **Configurazione**: Può fare setup di configurazioni e binding complessi
 - **Eventi**: Può registrare eventi e listener nel metodo `boot()`
 - **View Composers**: Può registrare view composers per Blade
@@ -283,7 +283,7 @@ class MongoUserRepository implements UserRepositoryInterface
 - ✅ **Usa accessors e mutators** per trasformare dati
 - ✅ **Usa scopes** per query riutilizzabili
 
-#### Eccezioni alla Logica Business
+### Eccezioni alla Logica Business
 - **Accessor/Mutator**: Può fare logica di trasformazione dati
 - **Scopes**: Può fare query complesse per il model stesso
 - **Relazioni**: Può accedere a tabelle correlate tramite relazioni
@@ -357,7 +357,7 @@ class User extends Model
 - ✅ **Un controller per risorsa** - gestisce una entità specifica
 - ❌ **Non fare logica business** nei controller → **usa Service Layer**
 
-#### Eccezioni (Logica HTTP pura)
+### Eccezioni (Logica HTTP pura)
 - **CRUD base**: Operazioni banali senza regole business (es: `User::paginate()`)
 - **Logica HTTP**: Redirect, response headers, status codes
 - **File Upload**: Validazione tecnica (tipo, dimensione, estensione)
@@ -418,7 +418,7 @@ class UserController extends Controller
 - ❌ **Non fare logica business** nel middleware → **usa Service Layer**
 - ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
-#### Eccezioni (Middleware che possono accedere al database)
+### Eccezioni (Middleware che possono accedere al database)
 - **Authentication**: Può accedere al database per verificare utenti
 - **Authorization**: Può fare query per verificare permessi
 - **Logging**: Può accedere al database per log delle richieste
@@ -566,7 +566,7 @@ class SendWelcomeEmail
 - ❌ **Non fare operazioni** che richiedono interazione utente → **usa Controller o Livewire**
 - ❌ **Non accedere a sessioni** o request → **usa dependency injection**
 
-#### Eccezioni
+### Eccezioni
 - **Batch Jobs**: Possono gestire più operazioni correlate
 - **Chained Jobs**: Possono dipendere da altri job
 - **Scheduled Jobs**: Possono accedere a configurazioni globali
@@ -1146,7 +1146,7 @@ class SendVerificationEmail
 
 ### Best Practices per il Service Layer
 
-#### ✅ **DO (Cosa Fare):**
+### DO (Cosa Fare)
 - **Una responsabilità per Service** - Single Responsibility
 - **Usa dependency injection** per le dipendenze
 - **Lancia eventi** per comunicare con altri servizi
@@ -1154,7 +1154,7 @@ class SendVerificationEmail
 - **Restituisci entità del dominio** o DTO
 - **Usa eccezioni specifiche** per errori business
 
-#### ❌ **DON'T (Cosa Non Fare):**
+### DON'T (Cosa Non Fare)
 - **Non gestire HTTP** → usa Controller
 - **Non accedere direttamente al DB** → usa Repository
 - **Non formattare per API** → usa Resource
@@ -1163,14 +1163,14 @@ class SendVerificationEmail
 
 ### Quando Creare un Service
 
-#### ✅ **Crea un Service quando:**
+### Crea un Service quando
 - Hai **logica business** complessa
 - Devi **coordinare** più repository
 - Hai **regole del dominio** da applicare
 - Devi **gestire transazioni** complesse
 - Hai **operazioni** che coinvolgono più entità
 
-#### ❌ **Non creare un Service quando:**
+### Non creare un Service quando
 - Hai solo **operazioni CRUD** semplici
 - Non c'è **logica business** reale
 - Stai solo **passando dati** tra layer
@@ -1277,7 +1277,7 @@ Il **Service Layer** è il **core logico** della tua applicazione Laravel. È qu
 - **Mai** `new` o `app()` nel codice applicativo
 - **Interfacce** per i binding nel container
 
-#### Eccezioni alla Dependency Injection
+### Eccezioni alla Dependency Injection
 - **Trait**: Non hanno costruttore → usa `app()` o metodi statici
 - **Closure/Anonymous functions**: Usa `app()` per risolvere dipendenze
 - **Static methods**: Usa `app()` quando necessario
@@ -1310,7 +1310,7 @@ class Helper
 - **Un metodo, una azione**
 - **Un file, un concetto**
 
-#### Eccezioni alla Single Responsibility
+### Eccezioni alla Single Responsibility
 - **Controller**: Può gestire più azioni correlate (CRUD)
 - **Model**: Può avere accessor/mutator + relazioni + scopes
 - **Service Provider**: Può registrare più servizi correlati
