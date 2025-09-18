@@ -30,6 +30,9 @@
 - [Best Practices Generali](#best-practices-generali)
 - [Quick Reference](#quick-reference)
 
+### Cheat Sheet Correlati
+- [**Laravel $this->app Methods Cheat Sheet**](./LARAVEL-APP-METHODS-CHEAT-SHEET.md) - Guida completa ai metodi di `$this->app`
+
 ---
 
 ## Regole Generali
@@ -67,6 +70,8 @@
 ---
 
 ## 1. Service Container (IoC Container)
+
+> 📚 **Approfondimento**: Per una guida completa ai metodi di `$this->app`, consulta il [**Laravel $this->app Methods Cheat Sheet**](./LARAVEL-APP-METHODS-CHEAT-SHEET.md)
 
 ### Cosa fa
 - **Gestisce le dipendenze** dell'applicazione
@@ -114,6 +119,8 @@ class UserController extends Controller
 ---
 
 ## 2. Service Provider
+
+> 🔧 **Metodi disponibili**: Per tutti i metodi di `$this->app` nei Service Provider, consulta la [**sezione Service Provider**](./LARAVEL-APP-METHODS-CHEAT-SHEET.md#2-service-provider) del cheat sheet dedicato
 
 ### Cosa fa
 - **Configurazione per la IoC** - registra servizi nel container

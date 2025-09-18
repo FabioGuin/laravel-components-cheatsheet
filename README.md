@@ -24,46 +24,48 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 
 ## Contenuto
 
-### 18 Componentistiche Principali
+### 📚 **Cheat Sheet Principali**
 
-1. **Service Container** - IoC e dependency injection
-2. **Service Provider** - configurazione per la IoC
-3. **Service** - implementazione logica business
-4. **Repository** - astrazione accesso dati
-5. **Model** - rappresentazione entità database
-6. **Controller** - gestione richieste HTTP
-7. **Middleware** - filtri cross-cutting
-8. **Form Request** - validazione centralizzata
-9. **Resource** - trasformazione per API
-10. **Event & Listener** - decoupling e comunicazione
-11. **Job** - elaborazione asincrona
-12. **Policy** - autorizzazione granulare
-13. **Blade Templates** - sistema templating
-14. **Artisan Commands** - comandi CLI
-15. **Migration** - versionamento database
-16. **Seeder** - popolamento dati
-17. **Factory** - generazione dati test
-18. **Test** - verifica comportamento
+#### 1. [**Laravel Components Cheat Sheet**](LARAVEL-COMPONENTS-CHEAT-SHEET.md)
+**Panoramica generale** delle 18 componentistiche principali di Laravel:
+- Service Container, Service Provider, Service, Repository
+- Model, Controller, Middleware, Form Request
+- Resource, Event & Listener, Job, Policy
+- Blade Templates, Artisan Commands, Migration, Seeder, Factory, Test
 
-### Sezioni Speciali
+#### 2. [**Laravel $this->app Methods Cheat Sheet**](LARAVEL-APP-METHODS-CHEAT-SHEET.md)
+**Approfondimento specifico** sui metodi di `$this->app`:
+- 17 sezioni dettagliate sui metodi del Service Container
+- Guida completa a binding, risoluzione, configurazione
+- Metodi helper sostitutivi quando `$this->app` non è accessibile
+- Best practices e esempi pratici
 
-- **Il Service Layer: Il Core Logico** - Approfondimento sul ruolo centrale del Service
-- **Best Practices Generali** - Principi SOLID, DRY, KISS, YAGNI
-- **Quick Reference** - Flusso tipico e pattern di utilizzo
+### 🔗 **Relazione tra i Cheat Sheet**
+
+- **Components Cheat Sheet**: Panoramica generale e best practices
+- **$this->app Methods Cheat Sheet**: Approfondimento tecnico specifico
+- **Cross-referencing**: Link bidirezionali tra i documenti
+- **Coerenza**: Principi allineati e complementari
 
 ## Come Usare
 
-1. **Consulta** il [Laravel Components Cheat Sheet](LARAVEL-COMPONENTS-CHEAT-SHEET.md)
-2. **Segui** le best practices per ogni componentistica
-3. **Applica** i pattern alternativi per evitare anti-pattern
-4. **Usa** il Service Layer come core logico dell'applicazione
+### 🚀 **Per Iniziare**
+1. **Inizia** con il [**Laravel Components Cheat Sheet**](LARAVEL-COMPONENTS-CHEAT-SHEET.md) per la panoramica generale
+2. **Approfondisci** con il [**Laravel $this->app Methods Cheat Sheet**](LARAVEL-APP-METHODS-CHEAT-SHEET.md) per i dettagli tecnici
+
+### 📖 **Per Consultazione**
+- **Service Container**: Components → $this->app Methods
+- **Service Provider**: Components → $this->app Methods (sezione Service Provider)
+- **Best Practices**: Entrambi i cheat sheet sono allineati
+- **Helper Sostitutivi**: $this->app Methods → Metodi Helper Sostitutivi
 
 ## Struttura
 
 ```
 Laravel-Components-CheatSheet/
 ├── README.md                           # Questo file
-├── LARAVEL-COMPONENTS-CHEAT-SHEET.md  # Cheat sheet principale
+├── LARAVEL-COMPONENTS-CHEAT-SHEET.md  # Cheat sheet principale (panoramica)
+├── LARAVEL-APP-METHODS-CHEAT-SHEET.md # Cheat sheet $this->app (approfondimento)
 ├── LICENSE                             # Licenza Apache 2.0
 ├── assets/                             # Risorse grafiche
 │   └── hero-image.png                  # Immagine HERO
