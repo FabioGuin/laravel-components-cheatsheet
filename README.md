@@ -24,7 +24,7 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 
 ## Contenuto
 
-### 📚 **Cheat Sheet Principali**
+### Cheat Sheet Principali
 
 #### 1. [**Laravel Components Cheat Sheet**](LARAVEL-COMPONENTS-CHEAT-SHEET.md)
 **Panoramica generale** delle 18 componentistiche principali di Laravel:
@@ -40,23 +40,15 @@ Questo cheat sheet fornisce una guida completa e pratica per le componentistiche
 - Metodi helper sostitutivi quando `$this->app` non è accessibile
 - Best practices e esempi pratici
 
-### 🔗 **Relazione tra i Cheat Sheet**
-
-- **Components Cheat Sheet**: Panoramica generale e best practices
-- **$this->app Methods Cheat Sheet**: Approfondimento tecnico specifico
-- **Cross-referencing**: Link bidirezionali tra i documenti
-- **Coerenza**: Principi allineati e complementari
-
 ## Come Usare
 
-### 🚀 **Per Iniziare**
+### Per Iniziare
 1. **Inizia** con il [**Laravel Components Cheat Sheet**](LARAVEL-COMPONENTS-CHEAT-SHEET.md) per la panoramica generale
 2. **Approfondisci** con il [**Laravel $this->app Methods Cheat Sheet**](LARAVEL-APP-METHODS-CHEAT-SHEET.md) per i dettagli tecnici
 
-### 📖 **Per Consultazione**
+### Per Consultazione
 - **Service Container**: Components → $this->app Methods
 - **Service Provider**: Components → $this->app Methods (sezione Service Provider)
-- **Best Practices**: Entrambi i cheat sheet sono allineati
 - **Helper Sostitutivi**: $this->app Methods → Metodi Helper Sostitutivi
 
 ## Struttura
