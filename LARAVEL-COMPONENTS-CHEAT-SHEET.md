@@ -53,6 +53,8 @@
 - **Eccezioni**: Accessor/Mutator, Scopes, Eventi Model, Validation
 
 #### 📊 **Accesso ai Dati**
+- **Default**: Usa Eloquent (sufficiente per 80% dei casi)
+- **Repository**: Solo per query complesse o multi-database
 - **Service** → usa Model Eloquent o Repository
 - **Controller** → delega al Service (eccezione: CRUD base senza logica business)
 - **Altri componenti** → usa Model Eloquent o Repository
@@ -195,7 +197,20 @@ class UserService
 
 ### Quando usare Repository?
 
-#### ✅ **Serve Repository** - Logica complessa o multi-database
+#### ✅ **USA Repository quando:**
+- **Query business complesse** (es: `findActiveUsersWithRecentOrders()`)
+- **Multi-database** (Eloquent + MongoDB + API)
+- **Testing intensivo** (mocking delle query)
+- **Team grandi** (separazione responsabilità)
+- **Legacy systems** (integrazione sistemi esistenti)
+
+#### ❌ **NON usare Repository quando:**
+- **CRUD semplice** (create, read, update, delete)
+- **Query standard** (where, orderBy, paginate)
+- **Progetto piccolo** (over-engineering)
+- **Solo Eloquent** (nessun multi-database)
+
+#### ✅ **Esempi di quando serve Repository:**
 ```php
 // ✅ CORRETTO - Query business complesse
 interface UserRepositoryInterface
@@ -236,16 +251,21 @@ class MongoUserRepository implements UserRepositoryInterface
 - ✅ **Implementa query specifiche** come metodi del repository
 - ❌ **Non accedere a più tabelle** non correlate → **usa Unit of Work Pattern**
 
-### Perché Laravel non usa Repository di default?
+### Perché Laravel privilegia Eloquent?
 
-**Laravel privilegia semplicità**: Eloquent fornisce già astrazione sufficiente per la maggior parte dei casi. Il Repository Pattern aggiunge un layer extra che spesso non è necessario e può portare a over-engineering.
+**Filosofia Laravel**: "Convention over Configuration" e semplicità. Eloquent fornisce già astrazione sufficiente per l'80% dei casi d'uso reali.
 
-**Usa Repository quando:**
-- Hai **logica di accesso complessa** (query business-specifiche)
-- Devi gestire **multi-database** (Eloquent + MongoDB + API)
-- Fai **testing intensivo** (mocking delle query)
-- Lavori con **team grandi** (separazione responsabilità)
-- Integri **legacy systems**
+**Vantaggi Eloquent:**
+- **Produttività** - sviluppo rapido senza configurazioni
+- **Leggibilità** - `$user->posts()` è più chiaro di `$userRepository->getPosts($user)`
+- **Ecosistema** - integrazione perfetta con Migration, Seeder, Factory
+- **Manutenibilità** - meno codice da mantenere
+
+**Repository aggiunge valore solo quando:**
+- **Query complesse** che non si adattano bene a Eloquent
+- **Multi-database** con logiche diverse
+- **Testing intensivo** con mocking specifico
+- **Team grandi** con separazione netta delle responsabilità
 
 ---
 
