@@ -56,3 +56,6 @@ node_modules/
 # Backup files
 *.bak
 *.backup
+
+# Specific files
+TODO.txt
