@@ -918,12 +918,12 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
                                                   │  │ Service     │     │
                                                   ▼  └─────────────┘     │
                                          ┌──────────────────────────┐    │
-                                         │      Response Layer      │←───┘
-                                         │ (Resource/View/Redirect) │
+                                         │      Output Layer        │←───┘
+                                         │ (Resource/Blade/Redirect)│
                                          └────────┬─────────────────┘
-                                                  ▼
+                                                   ▼
                                          ┌──────────────────────────┐
-                                         │       HTTP RESPONSE      │
+                                         │      HTTP Response       │
                                          │  (JSON/HTML/StatusCode)  │
                                          └──────────────────────────┘
 
@@ -932,13 +932,14 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 - **Evento (Dominio)**: Eventi legati alla business logic (es: OrderShipped, UserRegistered)
 - **Evento (Dati)**: Eventi legati a operazioni CRUD (es: UserCreated, PostUpdated)
 - **Listener**: Reagiscono agli eventi e coordinano altri service
-- **Response Layer**: Trasforma i dati in formato adatto (JSON/HTML)
+- **Output Layer**: Trasforma i dati in formato adatto (Resource/Blade/Redirect)
+- **HTTP Response**: Risposta finale al client (status, headers, body)
 
 **Note Importanti:**
 1. Il Controller può bypassare il Service Layer per operazioni semplici
 2. I Listener devono essere leggeri e delegare la logica complessa ai Service
 3. Gli eventi possono essere sincroni o asincroni (configurabili in `EventServiceProvider`)
-4. La Response Layer gestisce anche redirect e errori
+4. L'Output Layer gestisce trasformazione dati (Resource/Blade/Redirect)
 
 ### Flusso Tipico con Service al Centro
 
@@ -986,11 +987,11 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
     - Input: Dati processati + logica applicata
     - Output: Entità del dominio o DTO
 
-12. **Controller restituisce Resource**
+12. **Output Layer trasforma i dati**
     - Input: Entità del dominio
-    - Output: Dati formattati per API (JSON/XML)
+    - Output: Dati formattati (Resource/Blade/Redirect)
 
-13. **Response HTTP al client**
+13. **HTTP Response al client**
     - Input: Dati formattati + headers
     - Output: Risposta HTTP completa (status, body, headers)
 
@@ -998,7 +999,8 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 
 - **Service Layer** = **Core Logico** accessibile da qualsiasi entry point
 - **Data Layer** = Accesso ai dati (Model Eloquent o Repository), chiamabile da Service o direttamente
-- **Controller** = Solo uno dei possibili entry point, non l'unico
+- **Output Layer** = Trasformazione dati (Resource/Blade/Redirect)
+- **Controller** = Entry point principale per richieste HTTP
 - **Flessibilità** = Ogni entry point può accedere ai layer sottostanti
 
 ### Caratteristiche del Service Layer
@@ -1351,8 +1353,8 @@ class Helper
 5. **Controller** → riceve la richiesta
 6. **Service** → esegue logica business (se necessario)
 7. **Model/Repository** → accede ai dati
-8. **Resource** → trasforma per API
-9. **Response** → restituisce al client
+8. **Output Layer** → trasforma i dati (Resource/Blade/Redirect)
+9. **HTTP Response** → restituisce al client
 
 ### Componenti per responsabilità
 - **HTTP**: Controller, Middleware, Form Request
@@ -1365,7 +1367,7 @@ class Helper
 - **CLI**: Command, Schedule
 
 ### Pattern di utilizzo
-- **CRUD**: Controller + Service + Repository + Model
+- **CRUD**: Controller + Service + Data Layer + Output Layer
 - **API**: Resource + Form Request + Service
 - **Background**: Job + Event + Listener
 - **Auth**: Policy + Middleware + Gate
