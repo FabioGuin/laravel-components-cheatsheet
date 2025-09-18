@@ -877,7 +877,7 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 ### Architettura a Livelli con Service al Centro
 
 #### Flusso Principale HTTP
-![Architettura Laravel - Service Layer al Centro](./assets/laravel-architecture-diagram.svg)
+![Architettura Laravel - Service Layer al Centro](./assets/laravel-architecture-diagram.svg?v=10)
 **Legenda:**
 - **Evento (Dominio)**: Eventi legati alla business logic (es: OrderShipped, UserRegistered)
 - **Evento (Dati)**: Eventi legati a operazioni CRUD (es: UserCreated, PostUpdated)

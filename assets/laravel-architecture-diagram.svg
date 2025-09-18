@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" version="1.1">
-  <!-- Updated: 2024-12-19 15:35 with blue arrows and complete flow -->
+  <!-- Updated: 2024-12-19 16:20 final version -->
   <defs>
     <!-- Background gradient -->
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -52,6 +52,12 @@
   <rect width="1400" height="860" fill="url(#bgGradient)"/>
   <rect width="1400" height="860" fill="url(#grid)"/>
   
+  <!-- Controller's area of responsibility -->
+  <rect x="40" y="120" width="1320" height="690" rx="20" fill="#f0f9ff" opacity="0.4" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8 4"/>
+  <text x="80" y="145" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" font-weight="600" fill="#1e40af">
+    Area di Competenza del Controller
+  </text>
+  
   <!-- Decorative background elements -->
   <circle cx="1200" cy="100" r="60" fill="#f0f9ff" opacity="0.3"/>
   <circle cx="200" cy="700" r="40" fill="#fef3c7" opacity="0.2"/>
@@ -78,7 +84,7 @@
   <line x1="700" y1="73" x2="760" y2="73" class="arrow cap"/>
 
   <!-- Form Request to Controller -->
-  <line x1="855" y1="98" x2="610" y2="140" class="arrow cap"/>
+  <path d="M 855 98 L 855 110 L 610 110 L 610 140" class="arrow cap"/>
 
   <!-- Controller -->
   <rect x="520" y="140" width="180" height="60" class="box"/>
@@ -89,7 +95,7 @@
   <line x1="610" y1="200" x2="610" y2="242" class="arrow cap"/>
 
   <!-- Service Layer group -->
-  <rect x="400" y="244" width="420" height="96" class="group"/>
+  <rect x="380" y="244" width="460" height="116" class="group"/>
   <text x="610" y="266" text-anchor="middle" class="title">Service Layer</text>
   <text x="610" y="286" text-anchor="middle" class="muted">(Business Logic)</text>
 
@@ -116,7 +122,7 @@
   <line x1="516" y1="340" x2="516" y2="400" class="arrow cap"/>
 
   <!-- Data Layer group -->
-  <rect x="360" y="402" width="500" height="120" class="group"/>
+  <rect x="340" y="402" width="540" height="120" class="group"/>
   <text x="610" y="424" text-anchor="middle" class="title">Data Layer</text>
   <text x="610" y="444" text-anchor="middle" class="muted">Model / Repository</text>
 
@@ -143,24 +149,24 @@
   <line x1="526" y1="498" x2="526" y2="564" class="arrow cap"/>
 
   <!-- Output Layer group -->
-  <rect x="320" y="566" width="580" height="110" class="group"/>
+  <rect x="300" y="566" width="620" height="110" class="group"/>
   <text x="610" y="588" text-anchor="middle" class="title">Output Layer</text>
   <text x="610" y="608" text-anchor="middle" class="muted">(Resource / Blade / Redirect)</text>
 
   <!-- Output options -->
-  <rect x="356" y="620" width="170" height="44" class="box"/>
-  <text x="441" y="646" text-anchor="middle" class="lbl">Resource</text>
+  <rect x="376" y="620" width="170" height="44" class="box"/>
+  <text x="461" y="646" text-anchor="middle" class="lbl">Resource</text>
 
-  <rect x="546" y="620" width="170" height="44" class="box"/>
-  <text x="631" y="646" text-anchor="middle" class="lbl">Blade</text>
+  <rect x="566" y="620" width="170" height="44" class="box"/>
+  <text x="651" y="646" text-anchor="middle" class="lbl">Blade</text>
 
-  <rect x="736" y="620" width="144" height="44" class="box"/>
-  <text x="808" y="646" text-anchor="middle" class="lbl">Redirect</text>
+  <rect x="756" y="620" width="144" height="44" class="box"/>
+  <text x="828" y="646" text-anchor="middle" class="lbl">Redirect</text>
 
   <!-- Back to Response -->
-  <line x1="441" y1="664" x2="441" y2="710" class="arrow cap"/>
-  <line x1="631" y1="664" x2="631" y2="710" class="arrow cap"/>
-  <line x1="808" y1="664" x2="808" y2="710" class="arrow cap"/>
+  <line x1="461" y1="664" x2="461" y2="710" class="arrow cap"/>
+  <line x1="651" y1="664" x2="651" y2="710" class="arrow cap"/>
+  <line x1="828" y1="664" x2="828" y2="710" class="arrow cap"/>
 
   <!-- HTTP Response -->
   <rect x="420" y="712" width="420" height="72" class="box"/>
@@ -168,10 +174,10 @@
   <text x="630" y="760" text-anchor="middle" class="muted">(JSON / HTML / Status Code)</text>
 
   <!-- Side note: Controller delegates -->
-  <rect x="980" y="136" width="320" height="80" class="pill"/>
+  <rect x="960" y="136" width="360" height="80" class="pill"/>
   <text x="1140" y="162" text-anchor="middle" class="small">Il Controller non contiene logica di business</text>
   <text x="1140" y="182" text-anchor="middle" class="small">Innesca e delega a Service / Data / Output</text>
-  <path d="M 980 176 C 900 176 820 176 700 176" class="arrow-muted"/>
+  <path d="M 960 176 C 900 176 820 176 700 176" class="arrow-muted"/>
 
 
 </svg>
