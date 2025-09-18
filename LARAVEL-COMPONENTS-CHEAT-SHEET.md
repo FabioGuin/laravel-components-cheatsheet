@@ -879,6 +879,60 @@ Il **Service Layer** rappresenta il **core logico** della tua applicazione Larav
 3. Gli eventi possono essere sincroni o asincroni (configurabili in `EventServiceProvider`)
 4. La Response Layer gestisce anche redirect e errori
 
+### Flusso Tipico con Service al Centro
+
+1. **HTTP Request arriva al server**
+   - Input: Richiesta HTTP (URL, metodo, headers, body)
+   - Output: Richiesta processata
+
+2. **Route definisce URL e metodo**
+   - Input: Richiesta HTTP
+   - Output: Controller e metodo specifico da chiamare
+
+3. **Middleware filtra la richiesta**
+   - Input: Richiesta HTTP + Controller destinazione
+   - Output: Richiesta filtrata (auth, CORS, logging, etc.)
+
+4. **Form Request valida i dati** (se presente)
+   - Input: Richiesta filtrata + dati da validare
+   - Output: Dati validati e sanitizzati
+
+5. **Controller riceve la richiesta**
+   - Input: Richiesta validata + parametri
+   - Output: Chiamata al Service Layer
+
+6. **Controller chiama Service**
+   - Input: Dati validati + parametri business
+   - Output: Delegazione logica business
+
+7. **Service applica logica business**
+   - Input: Dati business + regole del dominio
+   - Output: Risultato business + eventi emessi
+
+8. **Service coordina Repository per i dati**
+   - Input: Operazioni CRUD + query business
+   - Output: Dati dal database + eventi di dati
+
+9. **Service lancia eventi per comunicare**
+   - Input: Eventi di dominio + eventi di dati
+   - Output: Notifiche a Listener
+
+10. **Listener gestiscono le conseguenze**
+    - Input: Eventi ricevuti
+    - Output: Azioni reattive (email, log, cache, etc.)
+
+11. **Service restituisce risultato**
+    - Input: Dati processati + logica applicata
+    - Output: Entità del dominio o DTO
+
+12. **Controller restituisce Resource**
+    - Input: Entità del dominio
+    - Output: Dati formattati per API (JSON/XML)
+
+13. **Response HTTP al client**
+    - Input: Dati formattati + headers
+    - Output: Risposta HTTP completa (status, body, headers)
+
 #### Caratteristiche Chiave
 
 - **Service Layer** = **Core Logico** accessibile da qualsiasi entry point
@@ -1002,62 +1056,6 @@ class SendVerificationEmail
         }
     }
 }
-```
-
-### Flusso Tipico con Service al Centro
-
-```
-1. HTTP Request arriva al server
-   → Input: Richiesta HTTP (URL, metodo, headers, body)
-   → Output: Richiesta processata
-
-2. Route definisce URL e metodo
-   → Input: Richiesta HTTP
-   → Output: Controller e metodo specifico da chiamare
-
-3. Middleware filtra la richiesta
-   → Input: Richiesta HTTP + Controller destinazione
-   → Output: Richiesta filtrata (auth, CORS, logging, etc.)
-
-4. Form Request valida i dati (se presente)
-   → Input: Richiesta filtrata + dati da validare
-   → Output: Dati validati e sanitizzati
-
-5. Controller riceve la richiesta
-   → Input: Richiesta validata + parametri
-   → Output: Chiamata al Service Layer
-
-6. Controller chiama Service
-   → Input: Dati validati + parametri business
-   → Output: Delegazione logica business
-
-7. Service applica logica business
-   → Input: Dati business + regole del dominio
-   → Output: Risultato business + eventi emessi
-
-8. Service coordina Repository per i dati
-   → Input: Operazioni CRUD + query business
-   → Output: Dati dal database + eventi di dati
-
-9. Service lancia eventi per comunicare
-   → Input: Eventi di dominio + eventi di dati
-   → Output: Notifiche a Listener
-
-10. Listener gestiscono le conseguenze
-    → Input: Eventi ricevuti
-    → Output: Azioni reattive (email, log, cache, etc.)
-
-11. Service restituisce risultato
-    → Input: Dati processati + logica applicata
-    → Output: Entità del dominio o DTO
-
-12. Controller restituisce Resource
-    → Input: Entità del dominio
-    → Output: Dati formattati per API (JSON/XML)
-
-13. Response HTTP al client
-    → Input: Dati formattati + headers
-    → Output: Risposta HTTP completa (status, body, headers)
 ```
 
 ### Vantaggi del Service come Core
