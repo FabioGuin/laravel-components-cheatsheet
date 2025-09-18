@@ -25,9 +25,42 @@
 18. [Test](#18-test)
 
 ### Sezioni Speciali
+- [Regole Generali](#regole-generali)
 - [Il Service Layer: Il Core Logico di Laravel](#il-service-layer-il-core-logico-di-laravel)
 - [Best Practices Generali](#best-practices-generali)
 - [Quick Reference](#quick-reference)
+
+---
+
+## Regole Generali
+
+### Principi Fondamentali
+
+#### 🎯 **Separation of Concerns**
+- **Controller**: Gestisce HTTP, coordina servizi
+- **Service**: Logica business, orchestrazione
+- **Repository**: Accesso dati, astrazione database
+- **Model**: Rappresentazione entità, relazioni
+
+#### 🔄 **Dependency Injection**
+- **Sempre** usa dependency injection per risolvere dipendenze
+- **Mai** `new` o `app()` nel codice applicativo
+- **Interfacce** per i binding nel container
+
+#### 🚫 **Logica Business**
+- **Solo nel Service Layer** - centralizza regole del dominio
+- **Non in Controller, Middleware, Form Request, Resource, Policy, Blade, Command, Migration, Seeder, Factory**
+- **Eccezioni**: Accessor/Mutator, Scopes, Eventi Model, Validation
+
+#### 📊 **Accesso ai Dati**
+- **Service** → usa Model Eloquent o Repository
+- **Controller** → delega al Service (eccezione: CRUD semplici)
+- **Altri componenti** → usa Model Eloquent o Repository
+
+#### ⚡ **Single Responsibility**
+- **Una classe, una responsabilità**
+- **Un metodo, una azione**
+- **Un file, un concetto**
 
 ---
 
@@ -39,19 +72,15 @@
 - **Registra e risolve** servizi, binding e istanze
 
 ### Best Practices
-- ✅ **Usa sempre dependency injection** per risolvere dipendenze
 - ✅ **Registra servizi nei Service Provider** con `$this->app->bind()`
 - ✅ **Usa interfacce** per i binding per maggiore flessibilità
-- ❌ **Non usare `new`** per creare istanze di servizi → **usa dependency injection**
-- ❌ **Non usare `app()`** nei controller o servizi → **usa dependency injection**
-- ❌ **Non fare binding** nel codice applicativo, solo nei provider → **usa Service Provider**
+- ❌ **Non fare binding** nel codice applicativo → **usa Service Provider**
 
-#### Eccezioni
+#### Eccezioni alla Dependency Injection
 - **Trait**: Non hanno costruttore → usa `app()` o metodi statici
 - **Closure/Anonymous functions**: Usa `app()` per risolvere dipendenze
 - **Static methods**: Usa `app()` quando necessario
 - **Global helpers**: Possono usare `app()` per servizi Laravel
-- **Service Provider**: Può usare `$this->app` per binding
 
 ### Esempi pratici
 ```php
@@ -94,7 +123,6 @@ class UserController extends Controller
 - ✅ **Usa `register()` per binding** e `boot()` per inizializzazione
 - ✅ **Registra sempre interfacce** invece di classi concrete
 - ✅ **Usa `singleton()` per servizi costosi** che non cambiano stato
-- ❌ **Non fare logica business** nei provider → **usa Service Layer**
 - ❌ **Non registrare servizi** che non servono sempre → **usa lazy loading**
 
 #### Eccezioni
@@ -102,7 +130,6 @@ class UserController extends Controller
 - **Eventi**: Può registrare eventi e listener nel metodo `boot()`
 - **View Composers**: Può registrare view composers per Blade
 - **Macro**: Può registrare macro per Collection, Builder, etc.
-- **Package Provider**: Può registrare più servizi correlati al package
 
 ### Esempi pratici
 ```php
@@ -133,10 +160,8 @@ class PaymentServiceProvider extends ServiceProvider
 
 ### Best Practices
 - ✅ **Una responsabilità per servizio** - Single Responsibility Principle
-- ✅ **Usa dependency injection** per le dipendenze
 - ✅ **Lancia eccezioni specifiche** per errori business
 - ✅ **Usa eventi** per comunicare con altri servizi
-- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 - ❌ **Non fare logica di presentazione** → **usa DTO o API Resources**
 
 ### Esempi pratici
@@ -209,7 +234,6 @@ class MongoUserRepository implements UserRepositoryInterface
 - ✅ **Un repository per entità** o aggregate
 - ✅ **Usa interfacce** per i contratti
 - ✅ **Implementa query specifiche** come metodi del repository
-- ❌ **Non fare logica business** nel repository → **usa Service Layer**
 - ❌ **Non accedere a più tabelle** non correlate → **usa Unit of Work Pattern**
 
 ### Perché Laravel non usa Repository di default?
@@ -238,16 +262,13 @@ class MongoUserRepository implements UserRepositoryInterface
 - ✅ **Definisci relazioni** come metodi
 - ✅ **Usa accessors e mutators** per trasformare dati
 - ✅ **Usa scopes** per query riutilizzabili
-- ❌ **Non fare logica business complessa** nei model → **usa Service Layer**
-- ❌ **Non accedere direttamente** ad altre tabelle non correlate → **usa relazioni Eloquent**
 
-#### Eccezioni
+#### Eccezioni alla Logica Business
 - **Accessor/Mutator**: Può fare logica di trasformazione dati
 - **Scopes**: Può fare query complesse per il model stesso
 - **Relazioni**: Può accedere a tabelle correlate tramite relazioni
 - **Eventi Model**: Può fare logica in `creating`, `updating`, `deleting`
 - **Validation**: Può fare validazione specifica del model
-- **Pivot Models**: Può gestire tabelle pivot con logica specifica
 
 ### Esempi pratici
 ```php
