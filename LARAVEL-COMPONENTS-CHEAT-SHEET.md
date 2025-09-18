@@ -37,8 +37,8 @@
 ### Principi Fondamentali
 
 #### 🎯 **Separation of Concerns**
-- **Controller**: Gestisce HTTP, coordina servizi
-- **Service**: Logica business, orchestrazione
+- **Controller**: Coordina HTTP (riceve → delega → risponde)
+- **Service**: Logica business, regole del dominio
 - **Repository**: Accesso dati, astrazione database
 - **Model**: Rappresentazione entità, relazioni
 
@@ -54,7 +54,7 @@
 
 #### 📊 **Accesso ai Dati**
 - **Service** → usa Model Eloquent o Repository
-- **Controller** → delega al Service (eccezione: CRUD semplici)
+- **Controller** → delega al Service (eccezione: CRUD base senza logica business)
 - **Altri componenti** → usa Model Eloquent o Repository
 
 #### ⚡ **Single Responsibility**
@@ -325,30 +325,28 @@ class User extends Model
 ## 6. Controller
 
 ### Cosa fa
-- **Gestisce le richieste HTTP** e restituisce risposte
-- **Coordina** tra service, repository e view
-- **Applica middleware** per autenticazione e autorizzazione
+- **Coordina le richieste HTTP** - riceve e delega
+- **Costruisce le risposte HTTP** - formatta output
+- **Gestisce logica HTTP pura** - redirect, headers, status codes
 
 ### Best Practices
-- ✅ **Mantieni i controller magri** - logica business nei service
+- ✅ **Controller = Coordinatore HTTP** - solo riceve e delega
 - ✅ **Usa Resource Controllers** per operazioni CRUD standard
 - ✅ **Usa Form Request** per validazione
 - ✅ **Restituisci Resource** per API consistenti
 - ✅ **Un controller per risorsa** - gestisce una entità specifica
 - ❌ **Non fare logica business** nei controller → **usa Service Layer**
-- ❌ **Non accedere direttamente** al database → **usa Model Eloquent o Repository**
 
-#### Eccezioni
-- **CRUD Controller**: Può gestire più azioni correlate (index, show, store, update, destroy)
-- **Logica HTTP**: Può gestire redirect, response headers, status codes
-- **File Upload**: Può gestire upload e validazione file
-- **Pagination**: Può gestire paginazione e filtri semplici
-- **Authentication**: Può gestire login/logout se non complesso
-- **Simple Controllers**: Per operazioni molto semplici può accedere direttamente al model (solo per CRUD base)
+#### Eccezioni (Logica HTTP pura)
+- **CRUD base**: Operazioni banali senza regole business (es: `User::paginate()`)
+- **Logica HTTP**: Redirect, response headers, status codes
+- **File Upload**: Validazione tecnica (tipo, dimensione, estensione)
+- **Paginazione semplice**: Limit, offset, filtri base
+- **Autenticazione HTTP**: Login/logout senza logica complessa
 
 ### Esempi pratici
 ```php
-// ✅ CORRETTO - Controller magro
+// ✅ CORRETTO - Controller magro (delega al Service)
 class UserController extends Controller
 {
     public function __construct(private UserService $userService) {}
@@ -357,6 +355,28 @@ class UserController extends Controller
     {
         $user = $this->userService->createUser($request->validated());
         return new UserResource($user);
+    }
+}
+
+// ✅ CORRETTO - Eccezione: CRUD base senza logica business
+class UserController extends Controller
+{
+    public function index(Request $request)
+    {
+        $users = User::paginate(15); // Operazione banale
+        return UserResource::collection($users);
+    }
+}
+
+// ❌ SBAGLIATO - Logica business nel Controller
+class UserController extends Controller
+{
+    public function store(Request $request)
+    {
+        // NO! Logica business nel Controller
+        $role = $request->email === 'admin@example.com' ? 'admin' : 'user';
+        $user = User::create([...]);
+        Mail::to($user)->send(new WelcomeEmail());
     }
 }
 ```
