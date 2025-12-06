@@ -1,6 +1,24 @@
 # Laravel Components Cheat Sheet
 
-> **Riferimento rapido** per le componentistiche principali di Laravel e le best practices per utilizzarle correttamente
+> **Riferimento rapido** per le componentistiche principali di Laravel 12 e le best practices per utilizzarle correttamente
+
+## Laravel 12 - Compatibilità e Novità
+
+> 📅 **Laravel 12** è stato rilasciato il **24 febbraio 2025** come release di manutenzione con cambiamenti minimi.
+
+### Requisiti
+- **PHP 8.2+** (richiesto)
+- Compatibilità con la maggior parte delle applicazioni Laravel 11 senza modifiche al codice
+
+### Novità Principali
+- **Nuovi Starter Kit**: React, Vue e Livewire con Inertia 2, TypeScript, shadcn/ui e Tailwind CSS
+- **WorkOS AuthKit**: Integrazione per autenticazione sociale, passkey e SSO
+- **Aggiornamenti Dipendenze**: Miglioramenti di sicurezza e compatibilità
+
+### Compatibilità con questo Cheat Sheet
+Tutte le componentistiche documentate in questo cheat sheet sono **compatibili con Laravel 12**. Non ci sono cambiamenti significativi alle componentistiche principali in questa versione.
+
+---
 
 ## Indice Rapido
 

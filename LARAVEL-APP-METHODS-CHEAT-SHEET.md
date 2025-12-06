@@ -1,6 +1,24 @@
 # Laravel $this->app Methods Cheat Sheet
 
-> **Riferimento completo** per tutti i metodi disponibili tramite `$this->app` in Laravel
+> **Riferimento completo** per tutti i metodi disponibili tramite `$this->app` in Laravel 12
+
+## Laravel 12 - Compatibilità e Novità
+
+> 📅 **Laravel 12** è stato rilasciato il **24 febbraio 2025** come release di manutenzione con cambiamenti minimi.
+
+### Requisiti
+- **PHP 8.2+** (richiesto)
+- Compatibilità con la maggior parte delle applicazioni Laravel 11 senza modifiche al codice
+
+### Novità Principali
+- **Nuovi Starter Kit**: React, Vue e Livewire con Inertia 2, TypeScript, shadcn/ui e Tailwind CSS
+- **WorkOS AuthKit**: Integrazione per autenticazione sociale, passkey e SSO
+- **Aggiornamenti Dipendenze**: Miglioramenti di sicurezza e compatibilità
+
+### Compatibilità con questo Cheat Sheet
+Tutti i metodi documentati in questo cheat sheet sono **compatibili con Laravel 12**. Non ci sono cambiamenti ai metodi del Service Container (`$this->app`) in questa versione.
+
+---
 
 ## Indice Rapido
 
@@ -910,7 +928,7 @@ Ottiene la versione di Laravel.
 
 ```php
 $version = $this->app->version();
-// Output: "10.0.0"
+// Output: "12.0.0" (Laravel 12)
 ```
 
 #### `basePath($path = '')`
